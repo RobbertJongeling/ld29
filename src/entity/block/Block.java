@@ -37,8 +37,11 @@ public abstract class Block {
     }
           
     public void doDamage(int amount) {
-        this.damage -= amount;
-        
+        this.damage -= amount;        
+    }
+    
+    public int getDamage(){
+        return damage;
     }
       
     /**

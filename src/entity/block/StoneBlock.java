@@ -8,6 +8,7 @@ public class StoneBlock extends Block {
 
     public StoneBlock() {
         super();
+        damage = 100;
     }
 
     @Override
@@ -18,6 +19,6 @@ public class StoneBlock extends Block {
     @Override
     public byte[] getColor() {
         //TODO change color based on damage
-        return new byte[] {(byte) 119, (byte) 136, (byte) 153};
+        return new byte[]{(byte) 119, (byte) 136, (byte) 153};
     }
 }

@@ -21,7 +21,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package entity;
 
 import entity.block.*;
@@ -34,47 +33,56 @@ import org.lwjgl.util.Point;
  * @author David
  */
 public class World {
+
     private final int blockWidth = 50;
-        
+
     private final List<List<Block>> blocks;
-    
-    public World(){
+
+    public World() {
         this.blocks = new ArrayList<>();
-        for(int i = 0 ; i < 201 ; i++){
+        for (int i = 0; i < 201; i++) {
             ArrayList<Block> subBlocks = new ArrayList<>();
-            for(int j = 0 ; j < 201; j++){
+            for (int j = 0; j < 201; j++) {
                 subBlocks.add(new AirBlock());
             }
             this.blocks.add(subBlocks);
         }
     }
-    
-    public List<List<Block>> getBlocks(){
-        return blocks;
-    }   
 
-    public void addBlock(int gridX, int gridY, Block block){
-        Block b = blocks.get(gridX).get(gridY);
-        if(b instanceof AirBlock){
-            blocks.get(gridX).set(gridY,block);
-        }        
+    public List<List<Block>> getBlocks() {
+        return blocks;
     }
-    public int getBlockWidth(){        
+
+    public void addBlock(int gridX, int gridY, Block block) {
+        Block b = blocks.get(gridX).get(gridY);
+        if (b instanceof AirBlock) {
+            blocks.get(gridX).set(gridY, block);
+        }
+    }
+
+    public int getBlockWidth() {
         return blockWidth;
     }
-    
-    public Block getBlock(int gridX, int gridY){
-        return blocks.get(gridX).get(gridY);        
+
+    public Block getBlock(int gridX, int gridY) {
+        if (gridX < 0 || gridY < 0) {
+            return null;
+        }
+        return blocks.get(gridX).get(gridY);
     }
-    
-    public Point getPlayerLocationInGrid(int realX, int realY){        
-        int retX = (int)Math.floor(realX/blockWidth);
-        int retY = (int)Math.floor(realY/blockWidth);
+
+    public Point getPlayerLocationInGrid(int realX, int realY) {
+        int retX = (int) Math.floor(realX / blockWidth);
+        int retY = (int) Math.floor(realY / blockWidth);
         return new Point(retX, retY);
     }
-    
-    public void destroyBlock(int gridX, int gridY){
-        blocks.get(gridX).set(gridY, new AirBlock());
+
+    public void damageBlock(int gridX, int gridY) {
+        Block b = blocks.get(gridX).get(gridY);
+        b.doDamage(10);
+        if(b.getDamage() < 0){
+            blocks.get(gridX).set(gridY, new AirBlock());
+        }        
     }
-    
+
 }

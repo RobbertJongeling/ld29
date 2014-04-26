@@ -32,7 +32,7 @@ public class Player {
     //not grid based
     private int x = 0;
     private int y = 0;
-    
+
     private int speed = 2;
     private int width = 40;
     private Direction direction = Direction.IDLE;
@@ -44,8 +44,8 @@ public class Player {
     public int getX() {
         return x;
     }
-    
-    public int getSpeed(){
+
+    public int getSpeed() {
         return speed;
     }
 
@@ -66,21 +66,7 @@ public class Player {
     }
 
     public void move(int x, int y) {
-        if (x != 0 && y == 0) {
-            if (x > 0) {
-                this.direction = Direction.RIGHT;
-            } else {
-                this.direction = Direction.LEFT;
-            }
-        } else if (y != 0 && x == 0) {
-            if (y > 0) {
-                this.direction = Direction.UP;
-            } else {
-                this.direction = Direction.DOWN;
-            }
-        } else {
-            this.direction = Direction.IDLE;
-        }
+        this.direction = getPlayerDirection(x, y);
 
         this.x += x * speed;
         this.y += y * speed;
@@ -90,8 +76,46 @@ public class Player {
         return direction;
     }
 
+    /**
+     * Convert a given x and y direction to a textual representation of a
+     * direction in 9 directions.
+     *
+     * @param x
+     * @param y
+     * @return
+     */
+    public static Direction getPlayerDirection(int x, int y) {
+        if (x != 0) {
+            if (x > 0) {
+                if (y > 0) {
+                    return Direction.UPRIGHT;
+                } else if (y < 0) {
+                    return Direction.DOWNRIGHT;
+                } else {
+                    return Direction.RIGHT;
+                }
+            } else {
+                if (y > 0) {
+                    return Direction.UPLEFT;
+                } else if (y < 0) {
+                    return Direction.DOWNRIGHT;
+                } else {
+                    return Direction.LEFT;
+                }
+            }
+        } else if (y != 0 && x == 0) {
+            if (y > 0) {
+                return Direction.UP;
+            } else {
+                return Direction.DOWN;
+            }
+        } else {
+            return Direction.IDLE;
+        }
+    }
+
     public enum Direction {
-        UP, DOWN, LEFT, RIGHT, IDLE
+        IDLE, UP, DOWN, LEFT, RIGHT, UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT
     }
 
 }

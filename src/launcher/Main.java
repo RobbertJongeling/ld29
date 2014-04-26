@@ -6,6 +6,7 @@
 package launcher;
 
 import entity.Player;
+import entity.Player.Direction;
 import entity.World;
 import entity.block.*;
 import org.lwjgl.LWJGLException;
@@ -56,7 +57,7 @@ public class Main {
         GL11.glLoadIdentity();
         GL11.glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-                
+
         while (!Display.isCloseRequested()) {
             int delta = getDelta();
             pollInput();
@@ -117,7 +118,7 @@ public class Main {
 
     private void initGame() {
         world = new World();
-        world = Worldgenerator.generateWorld(); 
+        world = Worldgenerator.generateWorld();
         player = new Player();
         player.setX(100);
         player.setY(100);
@@ -133,14 +134,14 @@ public class Main {
     }
 
     private void draw() {
-        int widthFit = (SCREEN_WIDTH / world.getBlockWidth())+1;
-        int heightFit = (SCREEN_HEIGHT / world.getBlockWidth())+1;
-        
-        int cX = Math.min(widthFit,world.getBlocks().size());
+        int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
+        int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
+
+        int cX = Math.min(widthFit, world.getBlocks().size());
         int cY = Math.min(heightFit, world.getBlocks().get(0).size());//assuming the world is not a jagged grid...
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-        
+
         for (int i = 0; i < cX; i++) {
             for (int j = 0; j < cY; j++) {
                 Block block = world.getBlocks().get(i).get(j);
@@ -155,6 +156,15 @@ public class Main {
                 GL11.glVertex2f(i * w + w, j * w + w);
                 GL11.glVertex2f(i * w, j * w + w);
                 GL11.glEnd();
+                
+                int damage = block.getDamage();
+                
+                if(damage > 90 ||damage <0){
+                
+                }else if (damage > 50){
+                }else if (damage > 20){
+                
+                }
             }
         }
         drawPlayer();
@@ -167,10 +177,10 @@ public class Main {
         int x = player.getX();
         int y = player.getY();
         int w = player.getWidth();
-        GL11.glVertex2f(x, y);
-        GL11.glVertex2f(x + w, y);
-        GL11.glVertex2f(x + w, y + w);
-        GL11.glVertex2f(x, y + w);
+        GL11.glVertex2f(x + w / 2, y + w / 2);
+        GL11.glVertex2f(x + w * 1.5f, y + w / 2);
+        GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
+        GL11.glVertex2f(x + w / 2, y + w * 1.5f);
         GL11.glEnd();
 
         //draw drill
@@ -179,34 +189,33 @@ public class Main {
                 break;
             case LEFT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x, y);
+                GL11.glVertex2f(x + w / 2, y + w / 2);
+                GL11.glVertex2f(x + w / 2, y + w * 1.5f);
                 GL11.glVertex2f(x, y + w);
-                GL11.glVertex2f(x - w / 2, y + w / 2);
                 GL11.glEnd();
                 break;
             case RIGHT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w, y);
-                GL11.glVertex2f(x + w, y + w);
                 GL11.glVertex2f(x + w * 1.5f, y + w / 2);
+                GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
+                GL11.glVertex2f(x + w * 2, y + w);
                 GL11.glEnd();
                 break;
             case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x, y + w);
-                GL11.glVertex2f(x + w, y + w);
                 GL11.glVertex2f(x + w / 2, y + w * 1.5f);
+                GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
+                GL11.glVertex2f(x + w, y + w * 2);
                 GL11.glEnd();
                 break;
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x, y);
+                GL11.glVertex2f(x + w / 2, y + w / 2);
+                GL11.glVertex2f(x + w * 1.5f, y + w / 2);
                 GL11.glVertex2f(x + w, y);
-                GL11.glVertex2f(x + w / 2, y - w / 2);
                 GL11.glEnd();
                 break;
         }
-
     }
 
     /**
@@ -227,15 +236,37 @@ public class Main {
     }
 
     private void tryMovePlayer(int x, int y) {
-        Point p = world.getPlayerLocationInGrid(player.getX() + x * player.getSpeed(), player.getY() + y * player.getSpeed());
-        Block b = world.getBlock(p.getX(), p.getY());
-        System.err.println("" + p.getX() + ", " + p.getY());
-        if (b == null) {
+        Direction dir = Player.getPlayerDirection(x, y);
+        Point playerGridPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
+        Point targetPoint = null;
+        switch (dir) {
+            case DOWN:
+                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY() - 1);
+                break;
+            case UP:
+                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY() + 1);
+                break;
+            case LEFT:
+                targetPoint = new Point(playerGridPoint.getX() - 1, playerGridPoint.getY());
+                break;
+            case RIGHT:
+                targetPoint = new Point(playerGridPoint.getX() + 1, playerGridPoint.getY());
+                break;
+            default:
+                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY());
+                break;
+        }
+        if (targetPoint.getX() < 0 || targetPoint.getX() < 0) {
+            return;
+        }
+        Block targetBlock = world.getBlock(targetPoint.getX(), targetPoint.getY());
+
+        if (targetBlock == null) {
             player.move(x, y);
-        } else if (b instanceof AirBlock) {
+        } else if (targetBlock instanceof AirBlock) {
             player.move(x, y);
         } else {
-            world.destroyBlock(p.getX(), p.getX());
+            world.damageBlock(targetPoint.getX(), targetPoint.getY());
         }
     }
 }
