@@ -42,4 +42,18 @@ public class Block {
     public void destroy(){
         this.blockType = Blocktype.AIR;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public Blocktype getBlockType() {
+        return blockType;
+    }
+    
+    
 }

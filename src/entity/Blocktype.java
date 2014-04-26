@@ -28,6 +28,6 @@ package entity;
  *
  * @author David
  */
-enum Blocktype {
+public enum Blocktype {
     AIR,STONE,GROUND
 }
