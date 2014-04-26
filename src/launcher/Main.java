@@ -240,7 +240,7 @@ public class Main {
         Block b = world.getBlock(p.getX(),p.getY());
         if(b == null){
             player.move(x, y);
-        }else if(b.getBlockType() == Block.Blocktype.AIR){
+        }else if(b.getBlockType() == Blocktype.AIR){
             player.move(x, y);
         }else{
             System.err.println("boom");

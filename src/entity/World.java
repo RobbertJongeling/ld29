@@ -24,6 +24,7 @@
 
 package entity;
 
+import entity.block.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.lwjgl.util.Point;
@@ -45,13 +46,25 @@ public class World {
         return blocks;
     }
     
-    public void addBlock(int gridX, int gridY, Block.Blocktype type){
+
+    public void addBlock(int gridX, int gridY, Blocktype type){
         for(Block b : blocks){
             if(b.getX() == gridX && b.getY() == gridY){// block is already on that spot
                 return;
             }
         }
-        blocks.add(new Block(gridX, gridY, type));
+        
+        switch(type) {
+            case AIR: 
+                blocks.add(new AirBlock(gridX, gridY, type));
+                break;
+            case DIRT:
+                blocks.add(new DirtBlock(gridX, gridY, type));
+                break;
+            case STONE:
+                blocks.add(new StoneBlock(gridX,gridY ,type));
+                break;
+        }
     }
     public int getBlockWidth(){        
         return blockWidth;
@@ -70,7 +83,6 @@ public class World {
         int retX = (int)Math.floor(realX/blockWidth);
         int retY = (int)Math.floor(realY/blockWidth);
         return new Point(retX, retY);
-    }
-    
+    } 
     
 }

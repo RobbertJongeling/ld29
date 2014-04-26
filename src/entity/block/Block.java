@@ -22,42 +22,58 @@
  * THE SOFTWARE.
  */
 
-package entity;
+package entity.block;
 
 /**
  *
  * @author David
- */
-public class Block {
-    private final int gridX;
-    private final int gridY;
+ */  
+public abstract class Block {
+    private final int x;
+    private final int y;
+
     private Blocktype blockType;
+    //damage lvl, between 0 and 100, <0 => destroy
+    protected int damage;
     
     public Block(int gridX, int gridY, Blocktype type){
-        this.gridX = gridX;
-        this.gridY = gridY;
+        this.x = gridX;
+        this.y = gridY;
         this.blockType = type;
     }
     
     public void destroy(){
         this.blockType = Blocktype.AIR;
     }
+    
+    public void doDamage(int amount) {
+        this.damage -= amount;
+        if(damage < 0) {
+            this.destroy();
+        }
+    }
 
     public int getX() {
-        return gridX;
+        return x;
     }
 
     public int getY() {
-        return gridY;
+        return y;
     }
     
     public Blocktype getBlockType() {
         return blockType;
     }
     
-    public enum Blocktype {
-        AIR,STONE,GROUND
-    }
+    /**
+     * 
+     * @return time taken to drill trough block
+     */
+    public abstract int getDrillTime();
     
-    
+    /**
+     * 
+     * @return color of block in byte array of length three, first index red, second index green, third index blue
+     */
+    public abstract byte[] getColor();
 }
