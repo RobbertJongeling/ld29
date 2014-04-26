@@ -1,15 +1,13 @@
 package entity.block;
 
-import java.awt.Color;
-
 /**
  *
  * @author Robbert
  */
 public class DirtBlock extends Block {
 
-    public DirtBlock(int x, int y, Blocktype type) {
-        super(x, y, type);
+    public DirtBlock() {
+        super();
     }
 
     @Override

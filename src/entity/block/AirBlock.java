@@ -1,15 +1,13 @@
 package entity.block;
 
-import java.awt.Color;
-
 /**
  *
  * @author Robbert
  */
 public class AirBlock extends Block {
 
-    public AirBlock(int x, int y, Blocktype type) {
-        super(x, y, type);
+    public AirBlock() {
+        super();
     }
 
     @Override

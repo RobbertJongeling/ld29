@@ -36,53 +36,45 @@ import org.lwjgl.util.Point;
 public class World {
     private final int blockWidth = 50;
         
-    private final List<Block> blocks;
+    private final List<List<Block>> blocks;
     
     public World(){
         this.blocks = new ArrayList<>();
-    }
-    
-    public List<Block> getBlocks(){
-        return blocks;
-    }
-    
-
-    public void addBlock(int gridX, int gridY, Blocktype type){
-        for(Block b : blocks){
-            if(b.getX() == gridX && b.getY() == gridY){// block is already on that spot
-                return;
+        for(int i = 0 ; i < 64 ; i++){
+            ArrayList<Block> subBlocks = new ArrayList<>();
+            for(int j = 0 ; j < 64; j++){
+                subBlocks.add(new AirBlock());
             }
+            this.blocks.add(subBlocks);
         }
-        
-        switch(type) {
-            case AIR: 
-                blocks.add(new AirBlock(gridX, gridY, type));
-                break;
-            case DIRT:
-                blocks.add(new DirtBlock(gridX, gridY, type));
-                break;
-            case STONE:
-                blocks.add(new StoneBlock(gridX,gridY ,type));
-                break;
-        }
+    }
+    
+    public List<List<Block>> getBlocks(){
+        return blocks;
+    }   
+
+    public void addBlock(int gridX, int gridY, Block block){
+        Block b = blocks.get(gridX).get(gridY);
+        if(b instanceof AirBlock){
+            blocks.get(gridX).set(gridY,block);
+        }        
     }
     public int getBlockWidth(){        
         return blockWidth;
     }
     
     public Block getBlock(int gridX, int gridY){
-        for(Block b : blocks){
-            if(b.getX() == gridX && b.getY() == gridY){
-                return b;
-            }
-        }
-        return null;
+        return blocks.get(gridX).get(gridY);        
     }
     
     public Point getPlayerLocationInGrid(int realX, int realY){        
         int retX = (int)Math.floor(realX/blockWidth);
         int retY = (int)Math.floor(realY/blockWidth);
         return new Point(retX, retY);
-    } 
+    }
+    
+    public void destroyBlock(int gridX, int gridY){
+        blocks.get(gridX).set(gridY, new AirBlock());
+    }
     
 }
