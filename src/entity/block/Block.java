@@ -29,42 +29,18 @@ package entity.block;
  * @author David
  */  
 public abstract class Block {
-    private final int x;
-    private final int y;
 
-    private Blocktype blockType;
     //damage lvl, between 0 and 100, <0 => destroy
     protected int damage;
     
-    public Block(int gridX, int gridY, Blocktype type){
-        this.x = gridX;
-        this.y = gridY;
-        this.blockType = type;
+    public Block(){        
     }
-    
-    public void destroy(){
-        this.blockType = Blocktype.AIR;
-    }
-    
+          
     public void doDamage(int amount) {
         this.damage -= amount;
-        if(damage < 0) {
-            this.destroy();
-        }
+        
     }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-    
-    public Blocktype getBlockType() {
-        return blockType;
-    }
-    
+      
     /**
      * 
      * @return time taken to drill trough block

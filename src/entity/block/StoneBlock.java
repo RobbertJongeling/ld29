@@ -1,15 +1,13 @@
 package entity.block;
 
-import java.awt.Color;
-
 /**
  *
  * @author Robbert
  */
 public class StoneBlock extends Block {
 
-    public StoneBlock(int x, int y, Blocktype type) {
-        super(x, y, type);
+    public StoneBlock() {
+        super();
     }
 
     @Override

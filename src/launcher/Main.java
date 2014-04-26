@@ -7,9 +7,7 @@ package launcher;
 
 import entity.Player;
 import entity.World;
-import entity.block.Block;
-import entity.block.Blocktype;
-import java.awt.Color;
+import entity.block.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -85,7 +83,7 @@ public class Main {
             System.out.println("SPACE KEY IS DOWN");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                tryMovePlayer(1,1);                
+                tryMovePlayer(1, 1);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
                 tryMovePlayer(-1, 1);
             } else {
@@ -99,9 +97,9 @@ public class Main {
             } else {
                 tryMovePlayer(0, -1);
             }
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {            
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
             tryMovePlayer(-1, 0);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {            
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             tryMovePlayer(1, 0);
         } else {
             tryMovePlayer(0, 0);
@@ -138,18 +136,21 @@ public class Main {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        for (Block block : world.getBlocks()) {
-            byte[] c = block.getColor();
-            GL11.glColor3ub(c[0], c[1], c[2]);
-            
-            // draw quad block thing
-            GL11.glBegin(GL11.GL_QUADS);
-            int w = world.getBlockWidth();
-            GL11.glVertex2f(block.getX()*w, block.getY()*w);
-            GL11.glVertex2f(block.getX()*w + w, block.getY()*w);
-            GL11.glVertex2f(block.getX()*w + w, block.getY()*w + w);
-            GL11.glVertex2f(block.getX()*w, block.getY()*w + w);
-            GL11.glEnd();
+        for (int i = 0; i < world.getBlocks().size(); i++) {
+            for (int j = 0; j < world.getBlocks().get(i).size(); j++) {
+                Block block = world.getBlocks().get(i).get(j);
+                byte[] c = block.getColor();
+                GL11.glColor3ub(c[0], c[1], c[2]);
+
+                // draw quad block thing
+                GL11.glBegin(GL11.GL_QUADS);
+                int w = world.getBlockWidth();
+                GL11.glVertex2f(i * w, j * w);
+                GL11.glVertex2f(i * w + w, j * w);
+                GL11.glVertex2f(i * w + w, j * w + w);
+                GL11.glVertex2f(i * w, j * w + w);
+                GL11.glEnd();
+            }
         }
         drawPlayer();
     }
@@ -199,8 +200,8 @@ public class Main {
                 GL11.glVertex2f(x + w / 2, y - w / 2);
                 GL11.glEnd();
                 break;
-        }      
-       
+        }
+
     }
 
     /**
@@ -221,15 +222,15 @@ public class Main {
     }
 
     private void tryMovePlayer(int x, int y) {
-        Point p = world.getPlayerLocationInGrid(x*player.getSpeed(), y*player.getSpeed());
-        Block b = world.getBlock(p.getX(),p.getY());
-        if(b == null){
+        Point p = world.getPlayerLocationInGrid(player.getX() + x * player.getSpeed(), player.getY() + y * player.getSpeed());
+        Block b = world.getBlock(p.getX(), p.getY());
+        System.err.println("" + p.getX() + ", " + p.getY());
+        if (b == null) {
             player.move(x, y);
-        }else if(b.getBlockType() == Blocktype.AIR){
+        } else if (b instanceof AirBlock) {
             player.move(x, y);
-        }else{
-            System.err.println("boom");
-            b.destroy();
+        } else {
+            world.destroyBlock(p.getX(), p.getX());
         }
     }
 }
