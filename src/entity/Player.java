@@ -31,6 +31,9 @@ public class Player {
 
     private int x = 0;
     private int y = 0;
+    private int speed = 2;
+    private int width = 50;
+    private Direction direction = Direction.IDLE;
 
     public Player() {
 
@@ -52,9 +55,38 @@ public class Player {
         this.y = y;
     }
 
-    public void move(int x, int y){
-        this.x += x;
-        this.y += y;    
+    public int getWidth() {
+        return width;
     }
-    
+
+    public void move(int x, int y) {
+        if (x != 0 && y == 0) {
+            if (x > 0) {
+                this.direction = Direction.RIGHT;
+            } else {
+                this.direction = Direction.LEFT;
+            }
+        } else if (y != 0) {
+            if (y > 0 && x == 0) {
+                this.direction = Direction.UP;
+            } else {
+                this.direction = Direction.DOWN;
+            }
+        } else {
+            this.direction = Direction.IDLE;
+        }
+
+        this.x += x * speed;
+        this.y += y * speed;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public enum Direction {
+
+        UP, DOWN, LEFT, RIGHT, IDLE
+    }
+
 }

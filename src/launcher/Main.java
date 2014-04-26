@@ -52,7 +52,7 @@ public class Main {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         while (!Display.isCloseRequested()) {
-            
+
             pollInput();
 
             draw();
@@ -174,10 +174,45 @@ public class Main {
         GL11.glColor3ub((byte) 255, (byte) 69, (byte) 0);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(player.getX(), player.getY());
-        GL11.glVertex2f(player.getX() + 50, player.getY());
-        GL11.glVertex2f(player.getX() + 50, player.getY() + 50);
-        GL11.glVertex2f(player.getX(), player.getY() + 50);
+        GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
+        GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
+        GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
         GL11.glEnd();
+
+        //draw drill
+        switch (player.getDirection()) {
+            case IDLE:
+                break;
+            case LEFT:
+                GL11.glBegin(GL11.GL_TRIANGLES);
+                GL11.glVertex2f(player.getX(), player.getY());
+                GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
+                GL11.glVertex2f(player.getX() - player.getWidth() / 2, player.getY() + player.getWidth() / 2);
+                GL11.glEnd();
+                break;
+            case RIGHT:
+                GL11.glBegin(GL11.GL_TRIANGLES);
+                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
+                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
+                GL11.glVertex2f(player.getX() + player.getWidth() * 1.5f, player.getY() + player.getWidth() / 2);
+                GL11.glEnd();
+                break;
+            case UP:
+                GL11.glBegin(GL11.GL_TRIANGLES);
+                GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
+                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
+                GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() * 1.5f);
+                GL11.glEnd();
+                break;
+            case DOWN:
+                GL11.glBegin(GL11.GL_TRIANGLES);
+                GL11.glVertex2f(player.getX(), player.getY());
+                GL11.glVertex2f(player.getX()+player.getWidth(), player.getY());
+                GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() - player.getWidth() / 2);
+                GL11.glEnd();
+                break;
+        }
+
     }
 
 }
