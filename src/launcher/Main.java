@@ -6,6 +6,8 @@
 package launcher;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -42,7 +44,8 @@ public class Main {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         while (!Display.isCloseRequested()) {
-
+            pollInput();
+            
              // Clear the screen and depth buffer
 	    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);	
 		
@@ -60,6 +63,59 @@ public class Main {
         }
 
         Display.destroy();
+    }
+
+    private void pollInput() {
+          if (Mouse.isButtonDown(0)) {
+	    int x = Mouse.getX();
+	    int y = Mouse.getY();
+			
+	    System.out.println("MOUSE DOWN @ X: " + x + " Y: " + y);
+	}
+		
+	if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
+	    System.out.println("SPACE KEY IS DOWN");
+	}
+		
+	while (Keyboard.next()) {
+	    if (Keyboard.getEventKeyState()) {
+	        if (Keyboard.getEventKey() == Keyboard.KEY_A) {
+		    System.out.println("A Key Pressed");
+		}
+		if (Keyboard.getEventKey() == Keyboard.KEY_S) {
+		    System.out.println("S Key Pressed");
+		}
+		if (Keyboard.getEventKey() == Keyboard.KEY_D) {
+		    System.out.println("D Key Pressed");
+		}
+                if (Keyboard.getEventKey() == Keyboard.KEY_UP) {
+                    System.out.println("up");
+                }
+                if (Keyboard.getEventKey() == Keyboard.KEY_DOWN) {
+                    System.out.println("down");
+                }
+                if (Keyboard.getEventKey() == Keyboard.KEY_LEFT) {
+                    System.out.println("left");
+                }
+                if (Keyboard.getEventKey() == Keyboard.KEY_RIGHT) {
+                    System.out.println("right");
+                }
+                if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+                    System.out.println("ruuuun");
+                    Display.destroy();
+                }
+	    } else {
+	        if (Keyboard.getEventKey() == Keyboard.KEY_A) {
+		    System.out.println("A Key Released");
+	        }
+	    	if (Keyboard.getEventKey() == Keyboard.KEY_S) {
+		    System.out.println("S Key Released");
+		}
+		if (Keyboard.getEventKey() == Keyboard.KEY_D) {
+		    System.out.println("D Key Released");
+		}
+	    }
+	}
     }
 
 }
