@@ -6,10 +6,9 @@
 package launcher;
 
 import entity.Block;
-import entity.Blocktype;
 import entity.Player;
+import entity.World;
 import java.util.ArrayList;
-import java.util.List;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -27,7 +26,7 @@ public class Main {
     private final static int SCREEN_WIDTH = 800;
 
     private Player player;
-    private List<Block> world;
+    private World world;
 
     private long lastFrame;
     private int fps;
@@ -85,17 +84,17 @@ public class Main {
         } else if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
                 player.move(1, 1);
-            }else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-                player.move(-1,1);
-            }else{
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                player.move(-1, 1);
+            } else {
                 player.move(0, 1);
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
                 player.move(1, -1);
-            }else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
-                player.move(-1,-1);
-            }else{
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                player.move(-1, -1);
+            } else {
                 player.move(0, -1);
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
@@ -119,22 +118,25 @@ public class Main {
     }
 
     private void initGame() {
+        world = new World();
         player = new Player();
         player.setX(100);
         player.setY(100);
 
-        world = new ArrayList<>();
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
 
-        world.add(new Block(10, 20, Blocktype.STONE));
-        world.add(new Block(70, 20, Blocktype.STONE));
-        world.add(new Block(70, 20, Blocktype.STONE));
-        world.add(new Block(70 + 60, 20, Blocktype.STONE));
-        world.add(new Block(70, 20 + 60, Blocktype.GROUND));
-        world.add(new Block(10, 20 + 120, Blocktype.GROUND));
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Block.Blocktype.STONE);
 
-        world.add(new Block(100, 500, Blocktype.AIR));
-        world.add(new Block(150, 500, Blocktype.AIR));
-        world.add(new Block(200, 500, Blocktype.AIR));
     }
 
     public void updateFPS() {
