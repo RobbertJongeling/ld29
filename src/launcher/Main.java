@@ -56,7 +56,7 @@ public class Main {
         GL11.glLoadIdentity();
         GL11.glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
+                
         while (!Display.isCloseRequested()) {
             int delta = getDelta();
             pollInput();
@@ -133,11 +133,16 @@ public class Main {
     }
 
     private void draw() {
+        int widthFit = (SCREEN_WIDTH / world.getBlockWidth())+1;
+        int heightFit = (SCREEN_HEIGHT / world.getBlockWidth())+1;
+        
+        int cX = Math.min(widthFit,world.getBlocks().size());
+        int cY = Math.min(heightFit, world.getBlocks().get(0).size());//assuming the world is not a jagged grid...
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-
-        for (int i = 0; i < world.getBlocks().size(); i++) {
-            for (int j = 0; j < world.getBlocks().get(i).size(); j++) {
+        
+        for (int i = 0; i < cX; i++) {
+            for (int j = 0; j < cY; j++) {
                 Block block = world.getBlocks().get(i).get(j);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
