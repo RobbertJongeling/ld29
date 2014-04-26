@@ -240,6 +240,7 @@ public class Main {
         return System.nanoTime() / 1000000;
     }
 
+    //  delta t in ms
     private int getDelta() {
         long time = getTime();
         int delta = (int) (time - lastFrame);
