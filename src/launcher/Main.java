@@ -124,19 +124,20 @@ public class Main {
         player.setY(100);
 
         world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
+        world.addBlock(1, 3, Block.Blocktype.STONE);
+        world.addBlock(1, 4, Block.Blocktype.STONE);
+        world.addBlock(1, 5, Block.Blocktype.STONE);
 
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-
+        world.addBlock(3, 2, Block.Blocktype.GROUND);
+        world.addBlock(3, 3, Block.Blocktype.GROUND);
+        world.addBlock(3, 4, Block.Blocktype.GROUND);
+        world.addBlock(3, 5, Block.Blocktype.GROUND);
+        
+        for(int i = 0 ; i < 10 ; i ++){
+            for(int j = 6 ; j < 10 ; j ++){
+                world.addBlock(i, j, Block.Blocktype.AIR);
+            }
+        }        
     }
 
     public void updateFPS() {
@@ -166,10 +167,10 @@ public class Main {
             }
             // draw quad block thing
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(b.getX(), b.getY());
-            GL11.glVertex2f(b.getX() + world.getBlockWidth(), b.getY());
-            GL11.glVertex2f(b.getX() + world.getBlockWidth(), b.getY() + world.getBlockWidth());
-            GL11.glVertex2f(b.getX(), b.getY() + world.getBlockWidth());
+            GL11.glVertex2f(b.getX()*world.getBlockWidth(), b.getY()*world.getBlockWidth());
+            GL11.glVertex2f(b.getX()*world.getBlockWidth() + world.getBlockWidth(), b.getY()*world.getBlockWidth());
+            GL11.glVertex2f(b.getX()*world.getBlockWidth() + world.getBlockWidth(), b.getY()*world.getBlockWidth() + world.getBlockWidth());
+            GL11.glVertex2f(b.getX()*world.getBlockWidth(), b.getY()*world.getBlockWidth() + world.getBlockWidth());
             GL11.glEnd();
         }
         drawPlayer();
