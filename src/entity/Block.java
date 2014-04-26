@@ -31,6 +31,7 @@ package entity;
 public class Block {
     private final int x;
     private final int y;
+    private final int width=50;
     private Blocktype blockType;
     
     public Block(int x, int y, Blocktype type){
@@ -51,6 +52,10 @@ public class Block {
         return y;
     }
 
+    public int getWidth(){
+        return width;
+    }
+    
     public Blocktype getBlockType() {
         return blockType;
     }

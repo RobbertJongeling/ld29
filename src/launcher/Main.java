@@ -23,11 +23,15 @@ import org.lwjgl.opengl.GL11;
  */
 public class Main {
 
-    private static int HEIGHT = 600;
-    private static int WIDTH = 800;
+    private final static int SCREEN_HEIGHT = 600;
+    private final static int SCREEN_WIDTH = 800;
 
     private Player player;
     private List<Block> world;
+
+    private long lastFrame;
+    private int fps;
+    private long lastFPS;
 
     public static void main(String[] args) {
         System.out.println("Whoo!");
@@ -38,27 +42,31 @@ public class Main {
     public void start() {
         initGame();
         try {
-            Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
+            Display.setDisplayMode(new DisplayMode(SCREEN_WIDTH, SCREEN_HEIGHT));
             Display.create();
         } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(0);
         }
 
+        getDelta(); // call once before loop to initialise lastFrame
+        lastFPS = getTime(); // call before loop to initialise fps timer
+
         // init OpenGL
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, WIDTH, 0, HEIGHT, 1, -1);
+        GL11.glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         while (!Display.isCloseRequested()) {
-
+            int delta = getDelta();
             pollInput();
 
             draw();
 
             Display.update();
-            Display.sync(60);
+            updateFPS();
+            Display.sync(60);            
         }
 
         Display.destroy();
@@ -142,6 +150,15 @@ public class Main {
         world.add(new Block(200, 500, Blocktype.AIR));
     }
 
+    public void updateFPS() {
+        if (getTime() - lastFPS > 1000) {
+            Display.setTitle("FPS: " + fps);
+            fps = 0;
+            lastFPS += 1000;
+        }
+        fps++;
+    }
+
     private void draw() {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
@@ -161,9 +178,9 @@ public class Main {
             // draw quad block thing
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex2f(b.getX(), b.getY());
-            GL11.glVertex2f(b.getX() + 50, b.getY());
-            GL11.glVertex2f(b.getX() + 50, b.getY() + 50);
-            GL11.glVertex2f(b.getX(), b.getY() + 50);
+            GL11.glVertex2f(b.getX() + b.getWidth(), b.getY());
+            GL11.glVertex2f(b.getX() + b.getWidth(), b.getY() + b.getWidth());
+            GL11.glVertex2f(b.getX(), b.getY() + b.getWidth());
             GL11.glEnd();
         }
         drawPlayer();
@@ -207,12 +224,26 @@ public class Main {
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                 GL11.glVertex2f(player.getX(), player.getY());
-                GL11.glVertex2f(player.getX()+player.getWidth(), player.getY());
+                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
                 GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() - player.getWidth() / 2);
                 GL11.glEnd();
                 break;
         }
-
     }
 
+    /**
+     * Get the time in milliseconds
+     *
+     * @return The system time in milliseconds
+     */
+    public long getTime() {
+        return System.nanoTime() / 1000000;
+    }
+
+    private int getDelta() {
+        long time = getTime();
+        int delta = (int) (time - lastFrame);
+        lastFrame = time;
+        return delta;
+    }
 }
