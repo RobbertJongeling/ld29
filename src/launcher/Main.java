@@ -119,25 +119,10 @@ public class Main {
 
     private void initGame() {
         world = new World();
+        world = Worldgenerator.generateWorld(); 
         player = new Player();
         player.setX(100);
         player.setY(100);
-
-        world.addBlock(1, 2, Blocktype.STONE);
-        world.addBlock(1, 3, Blocktype.STONE);
-        world.addBlock(1, 4, Blocktype.STONE);
-        world.addBlock(1, 5, Blocktype.STONE);
-
-        world.addBlock(3, 2, Blocktype.DIRT);
-        world.addBlock(3, 3, Blocktype.DIRT);
-        world.addBlock(3, 4, Blocktype.DIRT);
-        world.addBlock(3, 5, Blocktype.DIRT);
-        
-        for(int i = 0 ; i < 10 ; i ++){
-            for(int j = 6 ; j < 10 ; j ++){
-                world.addBlock(i, j, Blocktype.AIR);
-            }
-        }        
     }
 
     public void updateFPS() {
