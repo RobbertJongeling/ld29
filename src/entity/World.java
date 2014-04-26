@@ -40,9 +40,9 @@ public class World {
     
     public World(){
         this.blocks = new ArrayList<>();
-        for(int i = 0 ; i < 64 ; i++){
+        for(int i = 0 ; i < 201 ; i++){
             ArrayList<Block> subBlocks = new ArrayList<>();
-            for(int j = 0 ; j < 64; j++){
+            for(int j = 0 ; j < 201; j++){
                 subBlocks.add(new AirBlock());
             }
             this.blocks.add(subBlocks);

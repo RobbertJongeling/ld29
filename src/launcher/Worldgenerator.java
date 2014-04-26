@@ -16,11 +16,11 @@ public class Worldgenerator {
     public static World generateWorld() {
         World world = new World();
         
-        for(int i = -100 ; i < 100 ; i ++){
+        for(int i = 0 ; i < 200 ; i ++){
             for(int j = 6 ; j < 15 ; j ++){                
                 world.addBlock(i, j, new AirBlock());
             }
-            for(int k = 5; k>-185; k--) {
+            for(int k = 200; k>=0; k--) {
                 double r = Math.random();
                 if(r < 0.01) {
                     world.addBlock(i, k, new AirBlock());
