@@ -152,7 +152,7 @@ public class Main {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        for (Block b : world) {
+        for (Block b : world.getBlocks()) {
             switch (b.getBlockType()) {
                 case AIR:
                     GL11.glColor3ub((byte) 65, (byte) 105, (byte) 225);//blueish
@@ -167,9 +167,9 @@ public class Main {
             // draw quad block thing
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex2f(b.getX(), b.getY());
-            GL11.glVertex2f(b.getX() + b.getWidth(), b.getY());
-            GL11.glVertex2f(b.getX() + b.getWidth(), b.getY() + b.getWidth());
-            GL11.glVertex2f(b.getX(), b.getY() + b.getWidth());
+            GL11.glVertex2f(b.getX() + world.getBlockWidth(), b.getY());
+            GL11.glVertex2f(b.getX() + world.getBlockWidth(), b.getY() + world.getBlockWidth());
+            GL11.glVertex2f(b.getX(), b.getY() + world.getBlockWidth());
             GL11.glEnd();
         }
         drawPlayer();

@@ -35,17 +35,23 @@ public class World {
     private final int blockWidth = 50;
     private final int spaceWidth = 10;
     
-    private List<Block> blocks;
+    private final List<Block> blocks;
     
     public World(){
         this.blocks = new ArrayList<>();
+    }
+    
+    public List<Block> getBlocks(){
+        return blocks;
     }
     
     public void addBlock(int x, int y, Block.Blocktype type){
         //todo add detection
         blocks.add(new Block(x, y, type));
     }
-    
+    public int getBlockWidth(){
+        return blockWidth;
+    }
     
     
 }
