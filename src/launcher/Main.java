@@ -66,7 +66,7 @@ public class Main {
 
             Display.update();
             updateFPS();
-            Display.sync(60);            
+            Display.sync(60);
         }
 
         Display.destroy();
@@ -82,50 +82,37 @@ public class Main {
 
         if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
             System.out.println("SPACE KEY IS DOWN");
-        }
-
-        if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-            System.out.println("up");
-            player.move(0, 1);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            System.out.println("down");
-            player.move(0, -1);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                player.move(1, 1);
+            }else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+                player.move(-1,1);
+            }else{
+                player.move(0, 1);
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                player.move(1, -1);
+            }else if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)){
+                player.move(-1,-1);
+            }else{
+                player.move(0, -1);
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
             System.out.println("left");
             player.move(-1, 0);
-        }
-        if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             System.out.println("right");
             player.move(1, 0);
+        } else {
+            player.move(0, 0);
         }
 
         while (Keyboard.next()) {
             if (Keyboard.getEventKeyState()) {
-                if (Keyboard.getEventKey() == Keyboard.KEY_A) {
-                    System.out.println("A Key Pressed");
-                }
-                if (Keyboard.getEventKey() == Keyboard.KEY_S) {
-                    System.out.println("S Key Pressed");
-                }
-                if (Keyboard.getEventKey() == Keyboard.KEY_D) {
-                    System.out.println("D Key Pressed");
-                }
-
                 if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
                     System.out.println("ruuuun");
                     Display.destroy();
-                }
-            } else {
-                if (Keyboard.getEventKey() == Keyboard.KEY_A) {
-                    System.out.println("A Key Released");
-                }
-                if (Keyboard.getEventKey() == Keyboard.KEY_S) {
-                    System.out.println("S Key Released");
-                }
-                if (Keyboard.getEventKey() == Keyboard.KEY_D) {
-                    System.out.println("D Key Released");
                 }
             }
         }

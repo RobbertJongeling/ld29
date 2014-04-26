@@ -66,8 +66,8 @@ public class Player {
             } else {
                 this.direction = Direction.LEFT;
             }
-        } else if (y != 0) {
-            if (y > 0 && x == 0) {
+        } else if (y != 0 && x == 0) {
+            if (y > 0) {
                 this.direction = Direction.UP;
             } else {
                 this.direction = Direction.DOWN;
@@ -85,7 +85,6 @@ public class Player {
     }
 
     public enum Direction {
-
         UP, DOWN, LEFT, RIGHT, IDLE
     }
 
