@@ -29,13 +29,13 @@ package entity;
  * @author David
  */
 public class Block {
-    private final int x;
-    private final int y;
+    private final int gridX;
+    private final int gridY;
     private Blocktype blockType;
     
-    public Block(int x, int y, Blocktype type){
-        this.x = x;
-        this.y = y;
+    public Block(int gridX, int gridY, Blocktype type){
+        this.gridX = gridX;
+        this.gridY = gridY;
         this.blockType = type;
     }
     
@@ -44,11 +44,11 @@ public class Block {
     }
 
     public int getX() {
-        return x;
+        return gridX;
     }
 
     public int getY() {
-        return y;
+        return gridY;
     }
     
     public Blocktype getBlockType() {

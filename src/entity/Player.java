@@ -29,10 +29,12 @@ package entity;
  */
 public class Player {
 
+    //not grid based
     private int x = 0;
     private int y = 0;
+    
     private int speed = 2;
-    private int width = 50;
+    private int width = 40;
     private Direction direction = Direction.IDLE;
 
     public Player() {
@@ -41,6 +43,10 @@ public class Player {
 
     public int getX() {
         return x;
+    }
+    
+    public int getSpeed(){
+        return speed;
     }
 
     public void setX(int x) {

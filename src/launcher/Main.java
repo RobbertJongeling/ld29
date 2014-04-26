@@ -15,6 +15,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Point;
 
 /**
  *
@@ -83,28 +84,26 @@ public class Main {
             System.out.println("SPACE KEY IS DOWN");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                player.move(1, 1);
+                tryMovePlayer(1,1);                
             } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                player.move(-1, 1);
+                tryMovePlayer(-1, 1);
             } else {
-                player.move(0, 1);
+                tryMovePlayer(0, 1);
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                player.move(1, -1);
+                tryMovePlayer(1, -1);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                player.move(-1, -1);
+                tryMovePlayer(-1, -1);
             } else {
-                player.move(0, -1);
+                tryMovePlayer(0, -1);
             }
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-            System.out.println("left");
-            player.move(-1, 0);
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-            System.out.println("right");
-            player.move(1, 0);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {            
+            tryMovePlayer(-1, 0);
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {            
+            tryMovePlayer(1, 0);
         } else {
-            player.move(0, 0);
+            tryMovePlayer(0, 0);
         }
 
         while (Keyboard.next()) {
@@ -218,7 +217,8 @@ public class Main {
                 GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() - player.getWidth() / 2);
                 GL11.glEnd();
                 break;
-        }
+        }      
+       
     }
 
     /**
@@ -236,5 +236,18 @@ public class Main {
         int delta = (int) (time - lastFrame);
         lastFrame = time;
         return delta;
+    }
+
+    private void tryMovePlayer(int x, int y) {
+        Point p = world.getPlayerLocationInGrid(x*player.getSpeed(), y*player.getSpeed());
+        Block b = world.getBlock(p.getX(),p.getY());
+        if(b == null){
+            player.move(x, y);
+        }else if(b.getBlockType() == Block.Blocktype.AIR){
+            player.move(x, y);
+        }else{
+            System.err.println("boom");
+            b.destroy();
+        }
     }
 }

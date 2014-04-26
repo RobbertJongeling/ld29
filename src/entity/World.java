@@ -26,6 +26,7 @@ package entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.util.Point;
 
 /**
  *
@@ -33,8 +34,7 @@ import java.util.List;
  */
 public class World {
     private final int blockWidth = 50;
-    private final int spaceWidth = 10;
-    
+        
     private final List<Block> blocks;
     
     public World(){
@@ -45,12 +45,31 @@ public class World {
         return blocks;
     }
     
-    public void addBlock(int x, int y, Block.Blocktype type){
-        //todo add detection
-        blocks.add(new Block(x, y, type));
+    public void addBlock(int gridX, int gridY, Block.Blocktype type){
+        for(Block b : blocks){
+            if(b.getX() == gridX && b.getY() == gridY){// block is already on that spot
+                return;
+            }
+        }
+        blocks.add(new Block(gridX, gridY, type));
     }
-    public int getBlockWidth(){
+    public int getBlockWidth(){        
         return blockWidth;
+    }
+    
+    public Block getBlock(int gridX, int gridY){
+        for(Block b : blocks){
+            if(b.getX() == gridX && b.getY() == gridY){
+                return b;
+            }
+        }
+        return null;
+    }
+    
+    public Point getPlayerLocationInGrid(int realX, int realY){        
+        int retX = (int)Math.floor(realX/blockWidth);
+        int retY = (int)Math.floor(realY/blockWidth);
+        return new Point(retX, retY);
     }
     
     
