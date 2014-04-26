@@ -5,10 +5,11 @@
  */
 package launcher;
 
-import entity.Block;
 import entity.Player;
 import entity.World;
-import java.util.ArrayList;
+import entity.block.Block;
+import entity.block.Blocktype;
+import java.awt.Color;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -122,19 +123,19 @@ public class Main {
         player.setX(100);
         player.setY(100);
 
-        world.addBlock(1, 2, Block.Blocktype.STONE);
-        world.addBlock(1, 3, Block.Blocktype.STONE);
-        world.addBlock(1, 4, Block.Blocktype.STONE);
-        world.addBlock(1, 5, Block.Blocktype.STONE);
+        world.addBlock(1, 2, Blocktype.STONE);
+        world.addBlock(1, 3, Blocktype.STONE);
+        world.addBlock(1, 4, Blocktype.STONE);
+        world.addBlock(1, 5, Blocktype.STONE);
 
-        world.addBlock(3, 2, Block.Blocktype.GROUND);
-        world.addBlock(3, 3, Block.Blocktype.GROUND);
-        world.addBlock(3, 4, Block.Blocktype.GROUND);
-        world.addBlock(3, 5, Block.Blocktype.GROUND);
+        world.addBlock(3, 2, Blocktype.DIRT);
+        world.addBlock(3, 3, Blocktype.DIRT);
+        world.addBlock(3, 4, Blocktype.DIRT);
+        world.addBlock(3, 5, Blocktype.DIRT);
         
         for(int i = 0 ; i < 10 ; i ++){
             for(int j = 6 ; j < 10 ; j ++){
-                world.addBlock(i, j, Block.Blocktype.AIR);
+                world.addBlock(i, j, Blocktype.AIR);
             }
         }        
     }
@@ -152,24 +153,17 @@ public class Main {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-        for (Block b : world.getBlocks()) {
-            switch (b.getBlockType()) {
-                case AIR:
-                    GL11.glColor3ub((byte) 65, (byte) 105, (byte) 225);//blueish
-                    break;
-                case GROUND:
-                    GL11.glColor3ub((byte) 139, (byte) 69, (byte) 19);//brownish
-                    break;
-                case STONE:
-                    GL11.glColor3ub((byte) 119, (byte) 136, (byte) 153);//grayish
-                    break;
-            }
+        for (Block block : world.getBlocks()) {
+            byte[] c = block.getColor();
+            GL11.glColor3ub(c[0], c[1], c[2]);
+            
             // draw quad block thing
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glVertex2f(b.getX()*world.getBlockWidth(), b.getY()*world.getBlockWidth());
-            GL11.glVertex2f(b.getX()*world.getBlockWidth() + world.getBlockWidth(), b.getY()*world.getBlockWidth());
-            GL11.glVertex2f(b.getX()*world.getBlockWidth() + world.getBlockWidth(), b.getY()*world.getBlockWidth() + world.getBlockWidth());
-            GL11.glVertex2f(b.getX()*world.getBlockWidth(), b.getY()*world.getBlockWidth() + world.getBlockWidth());
+            int w = world.getBlockWidth();
+            GL11.glVertex2f(block.getX()*w, block.getY()*w);
+            GL11.glVertex2f(block.getX()*w + w, block.getY()*w);
+            GL11.glVertex2f(block.getX()*w + w, block.getY()*w + w);
+            GL11.glVertex2f(block.getX()*w, block.getY()*w + w);
             GL11.glEnd();
         }
         drawPlayer();
@@ -179,10 +173,13 @@ public class Main {
         //orangered, why not?
         GL11.glColor3ub((byte) 255, (byte) 69, (byte) 0);
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(player.getX(), player.getY());
-        GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
-        GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
-        GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
+        int x = player.getX();
+        int y = player.getY();
+        int w = player.getWidth();
+        GL11.glVertex2f(x, y);
+        GL11.glVertex2f(x + w, y);
+        GL11.glVertex2f(x + w, y + w);
+        GL11.glVertex2f(x, y + w);
         GL11.glEnd();
 
         //draw drill
@@ -191,30 +188,30 @@ public class Main {
                 break;
             case LEFT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(player.getX(), player.getY());
-                GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
-                GL11.glVertex2f(player.getX() - player.getWidth() / 2, player.getY() + player.getWidth() / 2);
+                GL11.glVertex2f(x, y);
+                GL11.glVertex2f(x, y + w);
+                GL11.glVertex2f(x - w / 2, y + w / 2);
                 GL11.glEnd();
                 break;
             case RIGHT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
-                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
-                GL11.glVertex2f(player.getX() + player.getWidth() * 1.5f, player.getY() + player.getWidth() / 2);
+                GL11.glVertex2f(x + w, y);
+                GL11.glVertex2f(x + w, y + w);
+                GL11.glVertex2f(x + w * 1.5f, y + w / 2);
                 GL11.glEnd();
                 break;
             case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(player.getX(), player.getY() + player.getWidth());
-                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY() + player.getWidth());
-                GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() + player.getWidth() * 1.5f);
+                GL11.glVertex2f(x, y + w);
+                GL11.glVertex2f(x + w, y + w);
+                GL11.glVertex2f(x + w / 2, y + w * 1.5f);
                 GL11.glEnd();
                 break;
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(player.getX(), player.getY());
-                GL11.glVertex2f(player.getX() + player.getWidth(), player.getY());
-                GL11.glVertex2f(player.getX() + player.getWidth() / 2, player.getY() - player.getWidth() / 2);
+                GL11.glVertex2f(x, y);
+                GL11.glVertex2f(x + w, y);
+                GL11.glVertex2f(x + w / 2, y - w / 2);
                 GL11.glEnd();
                 break;
         }      
