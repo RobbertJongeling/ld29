@@ -24,6 +24,7 @@
 
 package entity;
 
+import entity.block.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +46,20 @@ public class World {
         return blocks;
     }
     
-    public void addBlock(int x, int y, Block.Blocktype type){
+    public void addBlock(int x, int y, Blocktype type){
         //todo add detection
-        blocks.add(new Block(x, y, type));
+        //blocks.add(new Block(x, y, type));
+        switch(type) {
+            case AIR: 
+                blocks.add(new AirBlock(x, y, type));
+                break;
+            case DIRT:
+                blocks.add(new DirtBlock(x, y, type));
+                break;
+            case STONE:
+                blocks.add(new StoneBlock(x,y ,type));
+                break;
+        }
     }
     public int getBlockWidth(){
         return blockWidth;
