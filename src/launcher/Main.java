@@ -264,9 +264,20 @@ public class Main {
                 (int) Math.floor(((player.getY() - player.getWidth() * .5) - player.getFallVelocity()) / 50));
 
         if (targetBlockMax instanceof AirBlock && targetBlockMin instanceof AirBlock) {
-            player.fall(0);
+            player.fall(-1);
         } else if (targetBlockMin instanceof AirBlock) {
-            player.fall(1/*blockje zijn Y +- halve hoogte?*/);
+            int dist = (int) player.getFallVelocity()/50+1;
+            int playerGridX = player.getX()/50;
+            int playerGridY = player.getY()/50;
+            int limit = 0;
+            for(int i=1;i<=dist;i++){
+                Block testBlock = world.getBlock(playerGridX, playerGridY - i);
+                if(!(testBlock instanceof AirBlock)){
+                    limit = (i-1)*50;
+                    break;
+                }
+            }
+            player.fall(limit);
         }
 
     }

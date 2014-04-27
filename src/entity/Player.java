@@ -29,18 +29,19 @@ package entity;
  */
 public class Player {
 
-    public double gravity = 1.98;
+    public double gravity = 1.167;
     //not grid based
     private int x = 0;
     private int y = 0;
 
     private int speed = 2;
-    private int width = 40;
+    private final int width = 40;
     private double fallVelocity;
+    private final int weight = 5;
     private Direction direction = Direction.IDLE;
 
     public Player() {
-        fallVelocity = gravity;
+        this.fallVelocity = this.weight;
     }
 
     public int getSpeed() {
@@ -130,13 +131,13 @@ public class Player {
     }
 
     public void fall(int limit) {
-        if (limit != 0) {
-            this.y -= limit;
-            fallVelocity = gravity;
+        if (limit != -1) {
+            this.y = (int)(Math.ceil(this.y/50)*50) - limit + (int)(this.width*.5);
+            this.fallVelocity = this.weight;
             return;
         }
 
-        this.y -= fallVelocity;
-        fallVelocity += gravity;
+        this.y -= this.fallVelocity;
+        this.fallVelocity = this.fallVelocity * this.gravity;
     }
 }
