@@ -59,11 +59,9 @@ public class World {
             blocks.get(gridX).set(gridY, block);
         }
     }
-    public void changeBlock(int gridX, int gridY, Block block) 
-    {
-        
-            blocks.get(gridX).set(gridY, block);
-        
+
+    public void changeBlock(int gridX, int gridY, Block block) {
+        blocks.get(gridX).set(gridY, block);
     }
 
     public int getBlockWidth() {
@@ -77,18 +75,12 @@ public class World {
         return blocks.get(gridX).get(gridY);
     }
 
-    public Point getPlayerLocationInGrid(int realX, int realY) {
-        int retX = (int) Math.floor(realX / blockWidth);
-        int retY = (int) Math.floor(realY / blockWidth);
-        return new Point(retX, retY);
-    }
-
     public void damageBlock(int gridX, int gridY) {
         Block b = blocks.get(gridX).get(gridY);
         b.doDamage(10);
-        if(b.getDamage() < 0){
+        if (b.getDamage() < 0) {
             blocks.get(gridX).set(gridY, new AirBlock());
-        }        
+        }
     }
 
 }

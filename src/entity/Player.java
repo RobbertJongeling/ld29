@@ -43,14 +43,14 @@ public class Player {
         fallVelocity = gravity;
     }
 
-    public int getX() {
-        return x;
-    }
-
     public int getSpeed() {
         return speed;
     }
 
+    public int getX() {
+        return x;
+    }
+    
     public void setX(int x) {
         this.x = x;
     }
@@ -62,16 +62,16 @@ public class Player {
     public void setY(int y) {
         this.y = y;
     }
-
+    
     public int getWidth() {
         return width;
     }
-    public double getFallVelocity()
-    {
+
+    public double getFallVelocity() {
         return fallVelocity;
     }
-    public double getGravity()
-    {
+
+    public double getGravity() {
         return gravity;
     }
 
@@ -125,18 +125,17 @@ public class Player {
     }
 
     public enum Direction {
+
         IDLE, UP, DOWN, LEFT, RIGHT, UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT
     }
 
-    public void Fall(int limit)
-    {
-        if(limit != 0)
-        {
+    public void fall(int limit) {
+        if (limit != 0) {
             this.y -= limit;
             fallVelocity = gravity;
             return;
         }
-        
+
         this.y -= fallVelocity;
         fallVelocity += gravity;
     }
