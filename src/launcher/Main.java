@@ -244,7 +244,7 @@ public class Main {
             player.move(x, y);
         } else if (targetBlock instanceof AirBlock) {
             player.move(x, y);
-        } else if(x!=0 && y!=0){
+        } else {
             world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY());
         }
     }
@@ -257,12 +257,12 @@ public class Main {
             return;
         
         Block targetBlockMin = world.getBlock(
-                (int) Math.floor(((player.getX()+player.getWidth()*.5))/50),
-                (int) Math.floor(((player.getY()+player.getWidth()*.5)-1)/50));
+                (int) Math.floor(player.getX()/50),
+                (int) Math.floor(((player.getY()-player.getWidth()*.5)-1)/50));
         
         Block targetBlockMax = world.getBlock(
-                (int) Math.floor(((player.getX()+player.getWidth()*.5))/50),
-                (int) Math.floor(((player.getY()+player.getWidth()*.5)-player.getFallVelocity())/50));
+                (int) Math.floor(player.getX()/50),
+                (int) Math.floor(((player.getY()-player.getWidth()*.5)-player.getFallVelocity())/50));
 
         if((targetBlockMax instanceof AirBlock) && targetBlockMin instanceof AirBlock)
             player.Fall(0);
