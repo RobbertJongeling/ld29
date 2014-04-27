@@ -59,14 +59,7 @@ public class Main {
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         while (!Display.isCloseRequested()) {
-            int delta = getDelta();
-            pollInput();
-
-            draw();
-
-            Display.update();
-            updateFPS();
-            Display.sync(60);
+            Update();
         }
 
         Display.destroy();
@@ -102,7 +95,8 @@ public class Main {
             tryMovePlayer(-1, 0);
         } else if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
             tryMovePlayer(1, 0);
-        } else {
+        } 
+            else {
             tryMovePlayer(0, 0);
         }
 
@@ -120,8 +114,12 @@ public class Main {
         world = new World();
         world = Worldgenerator.generateWorld();
         player = new Player();
-        player.setX(100);
-        player.setY(100);
+        player.setX(125);
+        player.setY(525);
+        world.changeBlock(
+                (int) Math.floor(((player.getX()+player.getWidth()*.5))/50),
+                (int) Math.floor(((player.getY()+player.getWidth()*.5)-1)/50), 
+                new AirBlock());
     }
 
     public void updateFPS() {
@@ -176,11 +174,11 @@ public class Main {
         GL11.glBegin(GL11.GL_QUADS);
         int x = player.getX();
         int y = player.getY();
-        int w = player.getWidth();
-        GL11.glVertex2f(x + w / 2, y + w / 2);
-        GL11.glVertex2f(x + w * 1.5f, y + w / 2);
-        GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
-        GL11.glVertex2f(x + w / 2, y + w * 1.5f);
+        int w = player.getWidth() / 2;
+        GL11.glVertex2f(x-w,y-w);
+        GL11.glVertex2f(x+w,y-w);
+        GL11.glVertex2f(x+w,y+w);
+        GL11.glVertex2f(x-w,y+w);
         GL11.glEnd();
 
         //draw drill
@@ -236,37 +234,55 @@ public class Main {
     }
 
     private void tryMovePlayer(int x, int y) {
-        Direction dir = Player.getPlayerDirection(x, y);
-        Point playerGridPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
-        Point targetPoint = null;
-        switch (dir) {
-            case DOWN:
-                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY() - 1);
-                break;
-            case UP:
-                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY() + 1);
-                break;
-            case LEFT:
-                targetPoint = new Point(playerGridPoint.getX() - 1, playerGridPoint.getY());
-                break;
-            case RIGHT:
-                targetPoint = new Point(playerGridPoint.getX() + 1, playerGridPoint.getY());
-                break;
-            default:
-                targetPoint = new Point(playerGridPoint.getX(), playerGridPoint.getY());
-                break;
-        }
-        if (targetPoint.getX() < 0 || targetPoint.getX() < 0) {
-            return;
-        }
-        Block targetBlock = world.getBlock(targetPoint.getX(), targetPoint.getY());
+        Point playerTargetPoint = new Point(
+                (int)Math.floor((player.getX()+(x*(player.getSpeed()+player.getWidth()*.5)))/50), 
+                (int)Math.floor((player.getY()+(y*(player.getSpeed()+player.getWidth()*.5)))/50));
+       
+        Block targetBlock = world.getBlock(playerTargetPoint.getX(), playerTargetPoint.getY());
 
         if (targetBlock == null) {
             player.move(x, y);
         } else if (targetBlock instanceof AirBlock) {
             player.move(x, y);
-        } else {
-            world.damageBlock(targetPoint.getX(), targetPoint.getY());
+        } else if(x!=0 && y!=0){
+            world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY());
         }
+    }
+    
+    private void applyGravity()
+    {
+        if (player.getDirection() == Direction.UP ||
+            player.getDirection() == Direction.UPLEFT ||
+            player.getDirection() == Direction.UPRIGHT)
+            return;
+        
+        Block targetBlockMin = world.getBlock(
+                (int) Math.floor(((player.getX()+player.getWidth()*.5))/50),
+                (int) Math.floor(((player.getY()+player.getWidth()*.5)-1)/50));
+        
+        Block targetBlockMax = world.getBlock(
+                (int) Math.floor(((player.getX()+player.getWidth()*.5))/50),
+                (int) Math.floor(((player.getY()+player.getWidth()*.5)-player.getFallVelocity())/50));
+
+        if((targetBlockMax instanceof AirBlock) && targetBlockMin instanceof AirBlock)
+            player.Fall(0);
+        else if (targetBlockMin instanceof AirBlock)
+            player.Fall(1/*blockje zijn Y +- halve hoogte?*/);
+            
+    }
+    
+    private void Update()
+    {
+        int delta = getDelta();
+        pollInput();
+
+        applyGravity();
+        
+        
+        draw();
+
+        Display.update();
+        updateFPS();
+        Display.sync(60);
     }
 }

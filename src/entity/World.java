@@ -59,6 +59,12 @@ public class World {
             blocks.get(gridX).set(gridY, block);
         }
     }
+    public void changeBlock(int gridX, int gridY, Block block) 
+    {
+        
+            blocks.get(gridX).set(gridY, block);
+        
+    }
 
     public int getBlockWidth() {
         return blockWidth;

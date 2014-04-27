@@ -29,16 +29,18 @@ package entity;
  */
 public class Player {
 
+    public double gravity = 1.98;
     //not grid based
     private int x = 0;
     private int y = 0;
 
     private int speed = 2;
     private int width = 40;
+    private double fallVelocity;
     private Direction direction = Direction.IDLE;
 
     public Player() {
-
+        fallVelocity = gravity;
     }
 
     public int getX() {
@@ -63,6 +65,14 @@ public class Player {
 
     public int getWidth() {
         return width;
+    }
+    public double getFallVelocity()
+    {
+        return fallVelocity;
+    }
+    public double getGravity()
+    {
+        return gravity;
     }
 
     public void move(int x, int y) {
@@ -118,4 +128,16 @@ public class Player {
         IDLE, UP, DOWN, LEFT, RIGHT, UPRIGHT, UPLEFT, DOWNRIGHT, DOWNLEFT
     }
 
+    public void Fall(int limit)
+    {
+        if(limit != 0)
+        {
+            this.y -= limit;
+            fallVelocity = gravity;
+            return;
+        }
+        
+        this.y -= fallVelocity;
+        fallVelocity += gravity;
+    }
 }
