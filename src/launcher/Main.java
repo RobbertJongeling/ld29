@@ -223,14 +223,14 @@ public class Main {
                 GL11.glVertex2f(x + w, y + w);
                 GL11.glEnd();
                 break;
-            case UP:
+            case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                 GL11.glVertex2f(x - w, y + w);
                 GL11.glVertex2f(x, y + w * 1.5f);
                 GL11.glVertex2f(x + w, y + w);
                 GL11.glEnd();
                 break;
-            case DOWN:
+            case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                 GL11.glVertex2f(x + w, y - w);
                 GL11.glVertex2f(x, y - w *1.5f);
