@@ -8,7 +8,7 @@ public class StoneBlock extends Block {
 
     public StoneBlock() {
         super();
-        damage = 100;
+        //damage = 100;
     }
 
     @Override

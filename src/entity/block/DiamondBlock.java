@@ -32,7 +32,7 @@ public class DiamondBlock extends Block {
 
     public DiamondBlock() {
         super();
-        damage = 100;
+        //damage = 100;
     }
 
     @Override

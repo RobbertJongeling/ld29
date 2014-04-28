@@ -8,7 +8,7 @@ public class DirtBlock extends Block {
 
     public DirtBlock() {
         super();
-        damage = 100;
+        //damage = 100;
     }
 
     @Override

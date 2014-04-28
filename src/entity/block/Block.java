@@ -31,7 +31,7 @@ package entity.block;
 public abstract class Block {
 
     //damage lvl, between 0 and 100, <0 => destroy
-    protected int damage;
+    protected int damage = 500;
     private int resistance = 0;
     
     public Block(){        

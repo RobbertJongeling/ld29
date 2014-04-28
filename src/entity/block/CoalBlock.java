@@ -32,7 +32,7 @@ public class CoalBlock extends Block {
 
     public CoalBlock() {
         super();
-        damage = 100;
+        //damage = 100;
     }
 
     @Override
