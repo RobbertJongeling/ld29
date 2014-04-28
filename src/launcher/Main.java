@@ -130,7 +130,7 @@ public class Main {
         fps++;
     }
 
-    private void draw(int offsetX, int offsetY) {
+    private void draw() {
         int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
         int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
 
@@ -139,17 +139,28 @@ public class Main {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
+        Point playerPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
+        
+        int startX = playerPoint.getX() - (int)Math.floor(widthFit/2);
+        int startY = playerPoint.getY() - (int)Math.floor(widthFit/2);
+        
+        startX = (startX <0)?0:startX;
+        startY = (startY <0)?0:startY;
+        
+        int endX = playerPoint.getX() + (int)Math.floor(widthFit/2);
+        int endY = playerPoint.getY() + (int)Math.floor(widthFit/2);
+        
         int w = world.getBlockWidth();
         int maxDamage = 500;
         double damageProportion = w * 0.5 / maxDamage;
-        for (int i = 0; i < cX; i++) {
-            for (int j = 0; j < cY; j++) {
+        for (int i = startX; i < endX; i++) {
+            for (int j = startY; j < endY; j++) {
                 Block block = world.getBlocks().get(i).get(j);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
-                int left = i * w + offsetX;
-                int top = j * w + offsetY;
+                int left = i * w;
+                int top = j * w;
                 int right = left + w;
                 int bottom = top + w;
                 // draw quad block thing
@@ -169,7 +180,7 @@ public class Main {
                     int centerX = (int) (left + w * .5);
                     int centerY = (int) (top + w * .5);
                     int visibleDamage = (int) Math.ceil(damage * damageProportion);
-
+                    //gray
                     GL11.glColor3ub((byte) 80, (byte) 80, (byte) 80);
 
                     GL11.glBegin(GL11.GL_QUADS);
@@ -325,14 +336,14 @@ public class Main {
             player.fall(-1);
         } else if (targetBlockMin instanceof AirBlock) {
             int dist = (int) player.getFallVelocity() / 50 + 1;
-            int worldWidth = world.getBlockWidth();
-            int playerGridX = player.getX() / worldWidth;
-            int playerGridY = player.getY() / worldWidth;
+            int blockWidth = world.getBlockWidth();
+            int playerGridX = player.getX() / blockWidth;
+            int playerGridY = player.getY() / blockWidth;
             int limit = 0;
             for (int i = 1; i <= dist; i++) {
                 Block testBlock = world.getBlock(playerGridX, playerGridY + i);
                 if (!(testBlock instanceof AirBlock)) {
-                    limit = (i - 1) * worldWidth;
+                    limit = (i - 1) * blockWidth;
                     break;
                 }
             }
@@ -346,8 +357,8 @@ public class Main {
 
         applyGravity();
 
-        draw(0 - (player.getX() - SCREEN_CENTER_X), 0 - (player.getY() - SCREEN_CENTER_Y));
-
+        //draw(0 - (player.getX() - SCREEN_CENTER_X), 0 - (player.getY() - SCREEN_CENTER_Y));
+        draw();
         Display.update();
         updateFPS();
         Display.sync(60);

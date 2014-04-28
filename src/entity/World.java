@@ -26,6 +26,7 @@ package entity;
 import entity.block.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.lwjgl.util.Point;
 
 /**
  *
@@ -82,6 +83,12 @@ public class World {
             return b;
         }
         return null;
+    }
+
+    public Point getPlayerLocationInGrid(int realX, int realY) {
+        int retX = (int) Math.floor(realX / blockWidth);
+        int retY = (int) Math.floor(realY / blockWidth);
+        return new Point(retX, retY);
     }
 
 }
