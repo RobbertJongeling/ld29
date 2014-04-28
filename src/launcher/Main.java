@@ -9,7 +9,6 @@ import entity.Player;
 import entity.Player.Direction;
 import entity.World;
 import entity.block.*;
-import java.awt.Font;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -262,7 +261,7 @@ public class Main {
         } else if (targetBlock instanceof AirBlock) {
             player.move(x, y);
         } else {
-            world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY(), player.getDamage());
+            player.addBlockCounter(world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY(), player.getDamage()));
         }
     }
 

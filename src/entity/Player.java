@@ -23,6 +23,7 @@
  */
 package entity;
 
+import entity.block.*;
 /**
  *
  * @author David
@@ -82,6 +83,8 @@ public class Player {
     }
     public void move(int x, int y) {
         //this.direction = getPlayerDirection(x, y);
+        if(y==1)
+            y=0;
 
         this.x += x * speed;
         this.y += y * speed;
@@ -148,5 +151,12 @@ public class Player {
 
         this.y += this.fallVelocity;
         this.fallVelocity = this.fallVelocity * this.gravity;
+    }
+    
+    public void addBlockCounter(Block block){
+        if(block == null)
+            return;
+        if(block instanceof DiamondBlock)
+            this.damage ++;
     }
 }
