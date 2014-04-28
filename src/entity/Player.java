@@ -38,6 +38,7 @@ public class Player {
     private final int width = 40;
     private double fallVelocity;
     private final int weight = 5;
+    private int damage = 5;
     private Direction direction = Direction.IDLE;
 
     public Player() {
@@ -76,6 +77,9 @@ public class Player {
         return gravity;
     }
 
+    public int getDamage(){
+        return damage;
+    }
     public void move(int x, int y) {
         this.direction = getPlayerDirection(x, y);
 
@@ -99,26 +103,26 @@ public class Player {
         if (x != 0) {
             if (x > 0) {
                 if (y > 0) {
-                    return Direction.UPRIGHT;
-                } else if (y < 0) {
                     return Direction.DOWNRIGHT;
+                } else if (y < 0) {
+                    return Direction.UPRIGHT;
                 } else {
                     return Direction.RIGHT;
                 }
             } else {
                 if (y > 0) {
-                    return Direction.UPLEFT;
+                    return Direction.DOWNLEFT;
                 } else if (y < 0) {
-                    return Direction.DOWNRIGHT;
+                    return Direction.UPRIGHT;
                 } else {
                     return Direction.LEFT;
                 }
             }
         } else if (y != 0 && x == 0) {
             if (y > 0) {
-                return Direction.UP;
-            } else {
                 return Direction.DOWN;
+            } else {
+                return Direction.UP;
             }
         } else {
             return Direction.IDLE;
@@ -132,12 +136,14 @@ public class Player {
 
     public void fall(int limit) {
         if (limit != -1) {
-            this.y = (int)(Math.ceil(this.y/50)*50) - limit + (int)(this.width*.5);
+            int gridY = (int)Math.ceil(this.y/50d);
+            int edge = (int)(gridY*50);
+            this.y = edge + limit - (int)(this.width*.5);
             this.fallVelocity = this.weight;
             return;
         }
 
-        this.y -= this.fallVelocity;
+        this.y += this.fallVelocity;
         this.fallVelocity = this.fallVelocity * this.gravity;
     }
 }

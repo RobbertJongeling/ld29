@@ -75,9 +75,9 @@ public class World {
         return blocks.get(gridX).get(gridY);
     }
 
-    public void damageBlock(int gridX, int gridY) {
+    public void damageBlock(int gridX, int gridY, int damage) {
         Block b = blocks.get(gridX).get(gridY);
-        b.doDamage(10);
+        b.doDamage(damage);
         if (b.getDamage() < 0) {
             blocks.get(gridX).set(gridY, new AirBlock());
         }

@@ -11,6 +11,8 @@ public class StoneBlock extends Block {
         damage = 100;
     }
 
+    public int resistance = 5;
+    
     @Override
     public int getDrillTime() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

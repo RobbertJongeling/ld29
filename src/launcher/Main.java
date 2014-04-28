@@ -9,6 +9,7 @@ import entity.Player;
 import entity.Player.Direction;
 import entity.World;
 import entity.block.*;
+import java.awt.Font;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -16,6 +17,9 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
+
+import org.newdawn.slick.Color;
+import org.newdawn.slick.TrueTypeFont;
 
 /**
  *
@@ -32,6 +36,8 @@ public class Main {
     private long lastFrame;
     private int fps;
     private long lastFPS;
+    
+    private TrueTypeFont font;
 
     public static void main(String[] args) {
         System.out.println("Whoo!");
@@ -53,11 +59,28 @@ public class Main {
         lastFPS = getTime(); // call before loop to initialise fps timer
 
         // init OpenGL
+//        GL11.glEnable(GL11.GL_TEXTURE_2D);
+//        GL11.glShadeModel(GL11.GL_SMOOTH);
+//        GL11.glDisable(GL11.GL_DEPTH_TEST);
+//        GL11.glDisable(GL11.GL_LIGHTING); 
+//        
+//        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//        GL11.glClearDepth(1); 
+//        
+//        GL11.glEnable(GL11.GL_BLEND);
+//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//        
+//        GL11.glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
+        
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        GL11.glOrtho(0, SCREEN_WIDTH, 0, SCREEN_HEIGHT, 1, -1);
+        GL11.glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
+        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+        font = new TrueTypeFont(awtFont, true);
+        
         while (!Display.isCloseRequested()) {
             update();
         }
@@ -77,19 +100,19 @@ public class Main {
             System.out.println("SPACE KEY IS DOWN");
         } else if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
             if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                tryMovePlayer(1, 1);
-            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                tryMovePlayer(-1, 1);
-            } else {
-                tryMovePlayer(0, 1);
-            }
-        } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
                 tryMovePlayer(1, -1);
             } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
                 tryMovePlayer(-1, -1);
             } else {
                 tryMovePlayer(0, -1);
+            }
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                tryMovePlayer(1, 1);
+            } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                tryMovePlayer(-1, 1);
+            } else {
+                tryMovePlayer(0, 1);
             }
         } else if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
             tryMovePlayer(-1, 0);
@@ -114,7 +137,7 @@ public class Main {
         world = Worldgenerator.generateWorld();
         player = new Player();
         player.setX(125);
-        player.setY(525);
+        player.setY(125);
         world.changeBlock(
                 (int) Math.floor(player.getX() / 50),
                 (int) Math.floor(player.getY() / 50),
@@ -165,6 +188,8 @@ public class Main {
             }
         }
         drawPlayer();
+        
+        //drawScore();
     }
 
     private void drawPlayer() {
@@ -215,6 +240,11 @@ public class Main {
         }
     }
 
+    private void drawScore(){
+        Color.white.bind();
+        font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.yellow);
+    }
+    
     /**
      * Get the time in milliseconds
      *
@@ -244,7 +274,7 @@ public class Main {
         } else if (targetBlock instanceof AirBlock) {
             player.move(x, y);
         } else {
-            world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY());
+            world.damageBlock(playerTargetPoint.getX(), playerTargetPoint.getY(), player.getDamage());
         }
     }
 
@@ -257,11 +287,11 @@ public class Main {
 
         Block targetBlockMin = world.getBlock(
                 (int) Math.floor(player.getX() / 50),
-                (int) Math.floor(((player.getY() - player.getWidth() * .5) - 1) / 50));
+                (int) Math.floor(((player.getY() + player.getWidth() * .5) + 1) / 50));
 
         Block targetBlockMax = world.getBlock(
                 (int) Math.floor(player.getX() / 50),
-                (int) Math.floor(((player.getY() - player.getWidth() * .5) - player.getFallVelocity()) / 50));
+                (int) Math.floor(((player.getY() + player.getWidth() * .5) + player.getFallVelocity()) / 50));
 
         if (targetBlockMax instanceof AirBlock && targetBlockMin instanceof AirBlock) {
             player.fall(-1);
@@ -271,7 +301,7 @@ public class Main {
             int playerGridY = player.getY()/50;
             int limit = 0;
             for(int i=1;i<=dist;i++){
-                Block testBlock = world.getBlock(playerGridX, playerGridY - i);
+                Block testBlock = world.getBlock(playerGridX, playerGridY + i);
                 if(!(testBlock instanceof AirBlock)){
                     limit = (i-1)*50;
                     break;

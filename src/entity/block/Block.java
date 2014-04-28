@@ -32,18 +32,18 @@ public abstract class Block {
 
     //damage lvl, between 0 and 100, <0 => destroy
     protected int damage;
+    private int resistance = 0;
     
     public Block(){        
     }
           
     public void doDamage(int amount) {
-        this.damage -= amount;        
+        this.damage -= (amount - resistance);
     }
     
     public int getDamage(){
         return damage;
     }
-      
     /**
      * 
      * @return time taken to drill trough block
