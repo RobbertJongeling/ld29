@@ -186,30 +186,30 @@ public class Main {
                 break;
             case LEFT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w / 2, y + w / 2);
-                GL11.glVertex2f(x + w / 2, y + w * 1.5f);
-                GL11.glVertex2f(x, y + w);
+                GL11.glVertex2f(x - w, y - w);
+                GL11.glVertex2f(x - w * 1.5f, y);
+                GL11.glVertex2f(x - w, y + w);
                 GL11.glEnd();
                 break;
             case RIGHT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w * 1.5f, y + w / 2);
-                GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
-                GL11.glVertex2f(x + w * 2, y + w);
+                GL11.glVertex2f(x + w, y - w);
+                GL11.glVertex2f(x + w * 1.5f, y);
+                GL11.glVertex2f(x + w, y + w);
                 GL11.glEnd();
                 break;
             case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w / 2, y + w * 1.5f);
-                GL11.glVertex2f(x + w * 1.5f, y + w * 1.5f);
-                GL11.glVertex2f(x + w, y + w * 2);
+                GL11.glVertex2f(x - w, y + w);
+                GL11.glVertex2f(x, y + w * 1.5f);
+                GL11.glVertex2f(x + w, y + w);
                 GL11.glEnd();
                 break;
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w / 2, y + w / 2);
-                GL11.glVertex2f(x + w * 1.5f, y + w / 2);
-                GL11.glVertex2f(x + w, y);
+                GL11.glVertex2f(x + w, y - w);
+                GL11.glVertex2f(x, y - w *1.5f);
+                GL11.glVertex2f(x - w, y - w);
                 GL11.glEnd();
                 break;
         }
