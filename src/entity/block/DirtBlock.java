@@ -11,7 +11,10 @@ public class DirtBlock extends Block {
         damage = 100;
     }
 
-    public int resistance = 1;
+    @Override
+    public int getResistance(){
+        return 1;
+    }
     
     @Override
     public int getDrillTime() {

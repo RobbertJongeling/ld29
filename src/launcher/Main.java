@@ -18,9 +18,6 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.Point;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
-
 /**
  *
  * @author David
@@ -36,8 +33,6 @@ public class Main {
     private long lastFrame;
     private int fps;
     private long lastFPS;
-    
-    private TrueTypeFont font;
 
     public static void main(String[] args) {
         System.out.println("Whoo!");
@@ -78,9 +73,6 @@ public class Main {
         GL11.glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 1, -1);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
-        font = new TrueTypeFont(awtFont, true);
-        
         while (!Display.isCloseRequested()) {
             update();
         }
@@ -238,11 +230,6 @@ public class Main {
                 GL11.glEnd();
                 break;
         }
-    }
-
-    private void drawScore(){
-        Color.white.bind();
-        font.drawString(100, 50, "THE LIGHTWEIGHT JAVA GAMES LIBRARY", Color.yellow);
     }
     
     /**

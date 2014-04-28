@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright 2014 David.
+ * Copyright 2014 beurskma.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,37 +26,28 @@ package entity.block;
 
 /**
  *
- * @author David
- */  
-public abstract class Block {
+ * @author beurskma
+ */
+public class DiamondBlock extends Block {
 
-    //damage lvl, between 0 and 100, <0 => destroy
-    protected int damage;
-    private int resistance = 0;
-    
-    public Block(){        
+    public DiamondBlock() {
+        super();
+        damage = 100;
     }
-          
-    public void doDamage(int amount) {
-        this.damage -= (amount - getResistance());
-    }
-    
+
+    @Override
     public int getResistance(){
-        return 0;
+        return 4;
     }
     
-    public int getDamage(){
-        return damage;
+    @Override
+    public int getDrillTime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    /**
-     * 
-     * @return time taken to drill trough block
-     */
-    public abstract int getDrillTime();
-    
-    /**
-     * 
-     * @return color of block in byte array of length three, first index red, second index green, third index blue
-     */
-    public abstract byte[] getColor();
+
+    @Override
+    public byte[] getColor() {
+        //TODO change color based on damage
+        return new byte[] {(byte) 50, (byte) 200, (byte) 150};
+    }
 }

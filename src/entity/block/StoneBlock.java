@@ -11,7 +11,10 @@ public class StoneBlock extends Block {
         damage = 100;
     }
 
-    public int resistance = 5;
+    @Override
+    public int getResistance(){
+        return 3;
+    }
     
     @Override
     public int getDrillTime() {
