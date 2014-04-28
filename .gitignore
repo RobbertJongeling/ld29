@@ -13,3 +13,7 @@ hs_err_pid*
 /nbproject/private/
 /build/
 /dist/
+
+#allow jar files in lib
+!/lib/*.jar
+!/lib/*/*.jar
