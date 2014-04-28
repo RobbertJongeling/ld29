@@ -26,6 +26,9 @@ public class Main {
     private final static int SCREEN_HEIGHT = 600;
     private final static int SCREEN_WIDTH = 800;
 
+    private final static int CENTER_SCREENX = 400;
+    private final static int CENTER_SCREENY = 300;
+
     private Player player;
     private World world;
 
@@ -125,8 +128,8 @@ public class Main {
     private void initGame() {
         world = Worldgenerator.generateWorld();
         player = new Player();
-        player.setX(125);
-        player.setY(125);
+        player.setX(CENTER_SCREENX);
+        player.setY(CENTER_SCREENY);
         world.changeBlock(
                 (int) Math.floor(player.getX() / 50f),
                 (int) Math.floor(player.getY() / 50f),
@@ -142,7 +145,7 @@ public class Main {
         fps++;
     }
 
-    private void draw() {
+    private void draw(int offsetX, int offsetY) {
         int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
         int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
 
@@ -160,8 +163,8 @@ public class Main {
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
-                int left = i * w;
-                int top = j * w;
+                int left = i * w + offsetX;
+                int top = j * w + offsetY;
                 int right = left + w;
                 int bottom = top + w;
                 // draw quad block thing
@@ -221,8 +224,8 @@ public class Main {
         //orangered, why not?
         GL11.glColor3ub((byte) 255, (byte) 69, (byte) 0);
         GL11.glBegin(GL11.GL_QUADS);
-        int x = player.getX();
-        int y = player.getY();
+        int x = CENTER_SCREENX;//player.getX();
+        int y = CENTER_SCREENY;//player.getY();
         int w = player.getWidth() / 2;
         GL11.glVertex2f(x - w, y - w);
         GL11.glVertex2f(x + w, y - w);
@@ -340,7 +343,7 @@ public class Main {
 
         applyGravity();
 
-        draw();
+        draw(0 - (player.getX() - CENTER_SCREENX), 0 - (player.getY() - CENTER_SCREENY));
 
         Display.update();
         updateFPS();
