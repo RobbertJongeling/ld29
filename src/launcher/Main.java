@@ -154,6 +154,7 @@ public class Main {
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
+        int w = world.getBlockWidth();
         for (int i = 0; i < cX; i++) {
             for (int j = 0; j < cY; j++) {
                 Block block = world.getBlocks().get(i).get(j);
@@ -162,7 +163,6 @@ public class Main {
 
                 // draw quad block thing
                 GL11.glBegin(GL11.GL_QUADS);
-                int w = world.getBlockWidth();
                 GL11.glVertex2f(i * w, j * w);
                 GL11.glVertex2f(i * w + w, j * w);
                 GL11.glVertex2f(i * w + w, j * w + w);
