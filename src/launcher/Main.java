@@ -36,7 +36,7 @@ public class Main {
     private int fps;
     private long lastFPS;
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         Main m = new Main();
         m.start();
     }
@@ -140,27 +140,27 @@ public class Main {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         Point playerPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
-        
-        int startX = playerPoint.getX() - (int)Math.floor(widthFit/2);
-        int startY = playerPoint.getY() - (int)Math.floor(heightFit/2);
-        
+
+        int startX = playerPoint.getX() - (int) Math.floor(widthFit / 2);
+        int startY = playerPoint.getY() - (int) Math.floor(heightFit / 2);
+
         //lower bounds
-        startX = (startX <0)?0:startX;
-        startY = (startY <0)?0:startY;
-        
-        int endX = playerPoint.getX() + (int)Math.floor(widthFit/2);
-        int endY = playerPoint.getY() + (int)Math.floor(heightFit/2);
-        
+        startX = (startX < 0) ? 0 : startX;
+        startY = (startY < 0) ? 0 : startY;
+
+        int endX = playerPoint.getX() + (int) Math.floor(widthFit / 2);
+        int endY = playerPoint.getY() + (int) Math.floor(heightFit / 2);
+
         //upper bounds
-        endX = (endX >= world.getSizeX()) ? world.getSizeX()-1 : endX;
-        endY = (endY >= world.getSizeY()) ? world.getSizeY()-1 : endY;
-                
+        endX = (endX >= world.getSizeX()) ? world.getSizeX() - 1 : endX;
+        endY = (endY >= world.getSizeY()) ? world.getSizeY() - 1 : endY;
+
         int w = world.getBlockWidth();
         int maxDamage = 500;
         double damageProportion = w * 0.5 / maxDamage;
-        for (int i = startX; i < endX; i++) {
-            for (int j = startY; j < endY; j++) {
-                Block block = world.getBlock(i, j);
+        for (int i = 0; i < cX; i++) {
+            for (int j = 0; j < cY; j++) {
+                Block block = world.getBlock(i + startX, j + startY);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
@@ -226,7 +226,7 @@ public class Main {
                 }
             }
         }
-        drawPlayer();     
+        drawPlayer();
     }
 
     private void drawPlayer() {
