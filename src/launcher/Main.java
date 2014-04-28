@@ -326,20 +326,20 @@ public class Main {
                 || player.getDirection() == Direction.UPRIGHT) {
             return;
         }
+        final int blockWidth = world.getBlockWidth();
 
         Block targetBlockMin = world.getBlock(
-                (int) Math.floor(player.getX() / 50f),
-                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + 1) / 50));
+                (int) Math.floor(player.getX() / blockWidth),
+                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + 1) / blockWidth));
 
         Block targetBlockMax = world.getBlock(
-                (int) Math.floor(player.getX() / 50f),
-                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + player.getFallVelocity()) / 50));
+                (int) Math.floor(player.getX() / blockWidth),
+                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + player.getFallVelocity()) / blockWidth));
 
         if (targetBlockMax instanceof AirBlock && targetBlockMin instanceof AirBlock) {
             player.fall(-1);
         } else if (targetBlockMin instanceof AirBlock) {
-            int dist = (int) player.getFallVelocity() / 50 + 1;
-            int blockWidth = world.getBlockWidth();
+            int dist = (int) player.getFallVelocity() / 50 + 1;            
             int playerGridX = player.getX() / blockWidth;
             int playerGridY = player.getY() / blockWidth;
             int limit = 0;
