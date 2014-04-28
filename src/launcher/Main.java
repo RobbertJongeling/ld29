@@ -27,7 +27,7 @@ public class Main {
     private final static int SCREEN_WIDTH = 800;
 
     private final static int SCREEN_CENTER_X = SCREEN_WIDTH / 2;
-    private final static int SCREEN_CENTER_Y = SCREEN_WIDTH / 2;
+    private final static int SCREEN_CENTER_Y = SCREEN_HEIGHT / 2;
 
     private Player player;
     private World world;
