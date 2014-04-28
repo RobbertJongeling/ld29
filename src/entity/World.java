@@ -26,7 +26,6 @@ package entity;
 import entity.block.*;
 import java.util.ArrayList;
 import java.util.List;
-import org.lwjgl.util.Point;
 
 /**
  *

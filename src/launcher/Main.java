@@ -26,8 +26,8 @@ public class Main {
     private final static int SCREEN_HEIGHT = 600;
     private final static int SCREEN_WIDTH = 800;
 
-    private final static int CENTER_SCREENX = 400;
-    private final static int CENTER_SCREENY = 300;
+    private final static int CENTER_SCREENX = SCREEN_WIDTH / 2;
+    private final static int CENTER_SCREENY = SCREEN_WIDTH / 2;
 
     private Player player;
     private World world;
@@ -55,20 +55,6 @@ public class Main {
         getDelta(); // call once before loop to initialise lastFrame
         lastFPS = getTime(); // call before loop to initialise fps timer
 
-        // init OpenGL
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glShadeModel(GL11.GL_SMOOTH);
-//        GL11.glDisable(GL11.GL_DEPTH_TEST);
-//        GL11.glDisable(GL11.GL_LIGHTING); 
-//        
-//        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-//        GL11.glClearDepth(1); 
-//        
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        
-//        GL11.glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-//        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         GL11.glOrtho(0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 1, -1);
@@ -156,7 +142,7 @@ public class Main {
 
         int w = world.getBlockWidth();
         int maxDamage = 500;
-        double damageProportion = w * .5 / maxDamage;
+        double damageProportion = w * 0.5 / maxDamage;
         for (int i = 0; i < cX; i++) {
             for (int j = 0; j < cY; j++) {
                 Block block = world.getBlocks().get(i).get(j);
@@ -169,10 +155,12 @@ public class Main {
                 int bottom = top + w;
                 // draw quad block thing
                 GL11.glBegin(GL11.GL_QUADS);
-                GL11.glVertex2f(left, top);
-                GL11.glVertex2f(right, top);
-                GL11.glVertex2f(right, bottom);
-                GL11.glVertex2f(left, bottom);
+                {
+                    GL11.glVertex2f(left, top);
+                    GL11.glVertex2f(right, top);
+                    GL11.glVertex2f(right, bottom);
+                    GL11.glVertex2f(left, bottom);
+                }
                 GL11.glEnd();
 
                 int damage = block.getDamage();
@@ -186,51 +174,58 @@ public class Main {
                     GL11.glColor3ub((byte) 80, (byte) 80, (byte) 80);
 
                     GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(left, top);
-                    GL11.glVertex2f(left + tmp, top);
-                    GL11.glVertex2f(centerX - visibleDamage, centerY - visibleDamage);
-                    GL11.glVertex2f(left, top + tmp);
+                    {
+                        GL11.glVertex2f(left, top);
+                        GL11.glVertex2f(left + tmp, top);
+                        GL11.glVertex2f(centerX - visibleDamage, centerY - visibleDamage);
+                        GL11.glVertex2f(left, top + tmp);
+                    }
                     GL11.glEnd();
 
                     GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(right, top);
-                    GL11.glVertex2f(right, top + tmp);
-                    GL11.glVertex2f(centerX + visibleDamage, centerY - visibleDamage);
-                    GL11.glVertex2f(right - tmp, top);
+                    {
+                        GL11.glVertex2f(right, top);
+                        GL11.glVertex2f(right, top + tmp);
+                        GL11.glVertex2f(centerX + visibleDamage, centerY - visibleDamage);
+                        GL11.glVertex2f(right - tmp, top);
+                    }
                     GL11.glEnd();
 
                     GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(right, bottom);
-                    GL11.glVertex2f(right - tmp, bottom);
-                    GL11.glVertex2f(centerX + visibleDamage, centerY + visibleDamage);
-                    GL11.glVertex2f(right, bottom - tmp);
+                    {
+                        GL11.glVertex2f(right, bottom);
+                        GL11.glVertex2f(right - tmp, bottom);
+                        GL11.glVertex2f(centerX + visibleDamage, centerY + visibleDamage);
+                        GL11.glVertex2f(right, bottom - tmp);
+                    }
                     GL11.glEnd();
 
                     GL11.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(left, bottom);
-                    GL11.glVertex2f(left, bottom - tmp);
-                    GL11.glVertex2f(centerX - visibleDamage, centerY + visibleDamage);
-                    GL11.glVertex2f(left + tmp, bottom);
+                    {
+                        GL11.glVertex2f(left, bottom);
+                        GL11.glVertex2f(left, bottom - tmp);
+                        GL11.glVertex2f(centerX - visibleDamage, centerY + visibleDamage);
+                        GL11.glVertex2f(left + tmp, bottom);
+                    }
                     GL11.glEnd();
                 }
             }
         }
-        drawPlayer();
-
-        //drawScore();
+        drawPlayer();     
     }
 
     private void drawPlayer() {
         //orangered, why not?
         GL11.glColor3ub((byte) 255, (byte) 69, (byte) 0);
-        GL11.glBegin(GL11.GL_QUADS);
-        int x = CENTER_SCREENX;//player.getX();
-        int y = CENTER_SCREENY;//player.getY();
+
         int w = player.getWidth() / 2;
-        GL11.glVertex2f(x - w, y - w);
-        GL11.glVertex2f(x + w, y - w);
-        GL11.glVertex2f(x + w, y + w);
-        GL11.glVertex2f(x - w, y + w);
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
+            GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
+            GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
+            GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
+        }
         GL11.glEnd();
 
         //draw drill
@@ -239,30 +234,38 @@ public class Main {
                 break;
             case LEFT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x - w, y - w);
-                GL11.glVertex2f(x - w * 1.5f, y);
-                GL11.glVertex2f(x - w, y + w);
+                 {
+                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
+                    GL11.glVertex2f(CENTER_SCREENX - w * 1.5f, CENTER_SCREENY);
+                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
+                }
                 GL11.glEnd();
                 break;
             case RIGHT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w, y - w);
-                GL11.glVertex2f(x + w * 1.5f, y);
-                GL11.glVertex2f(x + w, y + w);
+                 {
+                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
+                    GL11.glVertex2f(CENTER_SCREENX + w * 1.5f, CENTER_SCREENY);
+                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
+                }
                 GL11.glEnd();
                 break;
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x - w, y + w);
-                GL11.glVertex2f(x, y + w * 1.5f);
-                GL11.glVertex2f(x + w, y + w);
+                 {
+                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
+                    GL11.glVertex2f(CENTER_SCREENX, CENTER_SCREENY + w * 1.5f);
+                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
+                }
                 GL11.glEnd();
                 break;
             case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
-                GL11.glVertex2f(x + w, y - w);
-                GL11.glVertex2f(x, y - w * 1.5f);
-                GL11.glVertex2f(x - w, y - w);
+                 {
+                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
+                    GL11.glVertex2f(CENTER_SCREENX, CENTER_SCREENY - w * 1.5f);
+                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
+                }
                 GL11.glEnd();
                 break;
             default:
@@ -290,8 +293,8 @@ public class Main {
     private void tryMovePlayer(int x, int y) {
         player.setDirection(x, y);
         Point playerTargetPoint = new Point(
-                (int) Math.floor((player.getX() + (x * (player.getSpeed() + player.getWidth() * .5))) / 50),
-                (int) Math.floor((player.getY() + (y * (player.getSpeed() + player.getWidth() * .5))) / 50));
+                (int) Math.floor((player.getX() + (x * (player.getSpeed() + player.getWidth() * 0.5))) / 50),
+                (int) Math.floor((player.getY() + (y * (player.getSpeed() + player.getWidth() * 0.5))) / 50));
 
         Block targetBlock = world.getBlock(playerTargetPoint.getX(), playerTargetPoint.getY());
 
@@ -313,23 +316,24 @@ public class Main {
 
         Block targetBlockMin = world.getBlock(
                 (int) Math.floor(player.getX() / 50f),
-                (int) Math.floor(((player.getY() + player.getWidth() * .5) + 1) / 50));
+                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + 1) / 50));
 
         Block targetBlockMax = world.getBlock(
-                (int) Math.floor(player.getX() / 50),
-                (int) Math.floor(((player.getY() + player.getWidth() * .5) + player.getFallVelocity()) / 50));
+                (int) Math.floor(player.getX() / 50f),
+                (int) Math.floor(((player.getY() + player.getWidth() * 0.5) + player.getFallVelocity()) / 50));
 
         if (targetBlockMax instanceof AirBlock && targetBlockMin instanceof AirBlock) {
             player.fall(-1);
         } else if (targetBlockMin instanceof AirBlock) {
             int dist = (int) player.getFallVelocity() / 50 + 1;
-            int playerGridX = player.getX() / 50;
-            int playerGridY = player.getY() / 50;
+            int worldWidth = world.getBlockWidth();
+            int playerGridX = player.getX() / worldWidth;
+            int playerGridY = player.getY() / worldWidth;
             int limit = 0;
             for (int i = 1; i <= dist; i++) {
                 Block testBlock = world.getBlock(playerGridX, playerGridY + i);
                 if (!(testBlock instanceof AirBlock)) {
-                    limit = (i - 1) * 50;
+                    limit = (i - 1) * worldWidth;
                     break;
                 }
             }

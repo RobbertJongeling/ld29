@@ -24,6 +24,7 @@
 package entity;
 
 import entity.block.*;
+
 /**
  *
  * @author David
@@ -53,7 +54,7 @@ public class Player {
     public int getX() {
         return x;
     }
-    
+
     public void setX(int x) {
         this.x = x;
     }
@@ -65,7 +66,7 @@ public class Player {
     public void setY(int y) {
         this.y = y;
     }
-    
+
     public int getWidth() {
         return width;
     }
@@ -78,13 +79,15 @@ public class Player {
         return gravity;
     }
 
-    public int getDamage(){
+    public int getDamage() {
         return damage;
     }
+
     public void move(int x, int y) {
         //this.direction = getPlayerDirection(x, y);
-        if(y==1)
-            y=0;
+        if (y == 1) {
+            y = 0;
+        }
 
         this.x += x * speed;
         this.y += y * speed;
@@ -93,7 +96,8 @@ public class Player {
     public Direction getDirection() {
         return direction;
     }
-    public void setDirection(int x, int y){
+
+    public void setDirection(int x, int y) {
         this.direction = getPlayerDirection(x, y);
     }
 
@@ -142,9 +146,9 @@ public class Player {
 
     public void fall(int limit) {
         if (limit != -1) {
-            int gridY = (int)Math.ceil(this.y/50d);
-            int edge = (int)(gridY*50);
-            this.y = edge + limit - (int)(this.width*.5);
+            int gridY = (int) Math.ceil(this.y / 50d);
+            int edge = (int) (gridY * 50);
+            this.y = edge + limit - (int) (this.width * .5);
             this.fallVelocity = this.weight;
             return;
         }
@@ -152,13 +156,14 @@ public class Player {
         this.y += this.fallVelocity;
         this.fallVelocity = this.fallVelocity * this.gravity;
     }
-    
-    public void addBlockCounter(Block block){
-        if(block == null)
+
+    public void addBlockCounter(Block block) {
+        if (block == null) {
             return;
-        else if(block instanceof DiamondBlock)
-            this.damage ++;
-        else if(block instanceof CoalBlock)
-            this.speed ++;
+        } else if (block instanceof DiamondBlock) {
+            this.damage++;
+        } else if (block instanceof CoalBlock) {
+            this.speed++;
+        }
     }
 }
