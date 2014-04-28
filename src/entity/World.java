@@ -84,9 +84,9 @@ public class World {
         return null;
     }
 
-    public Point getPlayerLocationInGrid(int realX, int realY) {
-        int retX = (int) Math.floor(realX / blockWidth);
-        int retY = (int) Math.floor(realY / blockWidth);
+    public Point getPlayerLocationInGrid(Player player) {
+        int retX = (int) Math.floor(player.getX() / blockWidth);
+        int retY = (int) Math.floor(player.getY() / blockWidth);
         return new Point(retX, retY);
     }
     

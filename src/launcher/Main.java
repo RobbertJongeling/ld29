@@ -131,39 +131,35 @@ public class Main {
     }
 
     private void draw() {
-        int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
-        int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
-
-        int cX = Math.min(widthFit, world.getSizeX());
-        int cY = Math.min(heightFit, world.getSizeY());//assuming the world is not a jagged grid...
-        // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        drawWorld();
+        drawPlayer();
+    }
 
-        Point playerPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
+    private void drawWorld() {
+        final int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
+        final int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
 
-        int startX = playerPoint.getX() - (int) Math.floor(widthFit / 2);
-        int startY = playerPoint.getY() - (int) Math.floor(heightFit / 2);
+        final int cX = Math.min(widthFit, world.getSizeX());
+        final int cY = Math.min(heightFit, world.getSizeY());//assuming the world is not a jagged grid...
+        // Clear the screen and depth buffer
 
-        //lower bounds
-        //startX = (startX < 0) ? 0 : startX;
-        // startY = (startY < 0) ? 0 : startY;
-        int endX = playerPoint.getX() + (int) Math.floor(widthFit / 2);
-        int endY = playerPoint.getY() + (int) Math.floor(heightFit / 2);
+        Point playerPoint = world.getPlayerLocationInGrid(player);
 
-        //upper bounds
-        //endX = (endX >= world.getSizeX()) ? world.getSizeX() - 1 : endX;
-        //endY = (endY >= world.getSizeY()) ? world.getSizeY() - 1 : endY;
-        int w = world.getBlockWidth();
-        int maxDamage = 500;
-        double damageProportion = w * 0.5 / maxDamage;
+        final int startX = playerPoint.getX() - (int) Math.floor(widthFit / 2);
+        final int startY = playerPoint.getY() - (int) Math.floor(heightFit / 2);
+
+        final int w = world.getBlockWidth();
+        final int maxDamage = 500;
+        final double damageProportion = w * 0.5 / maxDamage;
         for (int i = 0; i < cX + 1; i++) {
             for (int j = 0; j < cY + 1; j++) {
                 Block block = world.getBlock(i + startX, j + startY);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
-                int left = i * w - (int) (w * .5);
-                int top = j * w - (int) (w * .5);
+                int left = i * w - (w / 2);
+                int top = j * w - (w / 2);
                 int right = left + w;
                 int bottom = top + w;
                 // draw quad block thing
@@ -176,7 +172,7 @@ public class Main {
                 }
                 GL11.glEnd();
 
-                int damage = block.getDamage();
+                final int damage = block.getDamage();
                 if (damage < maxDamage && !(block instanceof AirBlock)) {
                     //wtf is dit?
                     int tmp = (int) Math.ceil((maxDamage / (damage + 1)) * 0.1f) + 2;
@@ -224,14 +220,13 @@ public class Main {
                 }
             }
         }
-        drawPlayer();
     }
 
     private void drawPlayer() {
         //orangered, why not?
         GL11.glColor3ub((byte) 255, (byte) 69, (byte) 0);
 
-        int w = player.getWidth() / 2;
+        final int w = player.getWidth() / 2;
         GL11.glBegin(GL11.GL_QUADS);
         {
             GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y - w);
@@ -339,7 +334,7 @@ public class Main {
         if (targetBlockMax instanceof AirBlock && targetBlockMin instanceof AirBlock) {
             player.fall(-1);
         } else if (targetBlockMin instanceof AirBlock) {
-            int dist = (int) player.getFallVelocity() / 50 + 1;            
+            int dist = (int) player.getFallVelocity() / 50 + 1;
             int playerGridX = player.getX() / blockWidth;
             int playerGridY = player.getY() / blockWidth;
             int limit = 0;
@@ -358,11 +353,15 @@ public class Main {
         pollInput();
 
         applyGravity();
-
-        //draw(0 - (player.getX() - SCREEN_CENTER_X), 0 - (player.getY() - SCREEN_CENTER_Y));
+        
         draw();
         Display.update();
         updateFPS();
         Display.sync(60);
+
+        if (world.getPlayerLocationInGrid(player).getX() > world.getSizeY() + 10) {
+            System.err.println("You've died!");
+            System.exit(0);
+        }
     }
 }
