@@ -128,8 +128,8 @@ public class Main {
         player.setX(125);
         player.setY(125);
         world.changeBlock(
-                (int) Math.floor(player.getX() / 50),
-                (int) Math.floor(player.getY() / 50),
+                (int) Math.floor(player.getX() / 50f),
+                (int) Math.floor(player.getY() / 50f),
                 new AirBlock());
     }
 
@@ -174,8 +174,8 @@ public class Main {
 
                 int damage = block.getDamage();
                 if (damage < maxDamage && !(block instanceof AirBlock)) {
-
-                    int tmp = (int) Math.ceil((maxDamage / (damage + 1)) * .1) + 2;
+                    //wtf is dit?
+                    int tmp = (int) Math.ceil((maxDamage / (damage + 1)) * 0.1f) + 2;
                     int centerX = (int) (left + w * .5);
                     int centerY = (int) (top + w * .5);
                     int visibleDamage = (int) Math.ceil(damage * damageProportion);
@@ -309,7 +309,7 @@ public class Main {
         }
 
         Block targetBlockMin = world.getBlock(
-                (int) Math.floor(player.getX() / 50),
+                (int) Math.floor(player.getX() / 50f),
                 (int) Math.floor(((player.getY() + player.getWidth() * .5) + 1) / 50));
 
         Block targetBlockMax = world.getBlock(
