@@ -26,8 +26,8 @@ public class Main {
     private final static int SCREEN_HEIGHT = 600;
     private final static int SCREEN_WIDTH = 800;
 
-    private final static int CENTER_SCREENX = SCREEN_WIDTH / 2;
-    private final static int CENTER_SCREENY = SCREEN_WIDTH / 2;
+    private final static int SCREEN_CENTER_X = SCREEN_WIDTH / 2;
+    private final static int SCREEN_CENTER_Y = SCREEN_WIDTH / 2;
 
     private Player player;
     private World world;
@@ -36,8 +36,7 @@ public class Main {
     private int fps;
     private long lastFPS;
 
-    public static void main(String[] args) {
-        System.out.println("Whoo!");
+    public static void main(String[] args) {        
         Main m = new Main();
         m.start();
     }
@@ -114,8 +113,8 @@ public class Main {
     private void initGame() {
         world = Worldgenerator.generateWorld();
         player = new Player();
-        player.setX(CENTER_SCREENX);
-        player.setY(CENTER_SCREENY);
+        player.setX(SCREEN_CENTER_X);
+        player.setY(SCREEN_CENTER_Y);
         world.changeBlock(
                 (int) Math.floor(player.getX() / 50f),
                 (int) Math.floor(player.getY() / 50f),
@@ -221,10 +220,10 @@ public class Main {
         int w = player.getWidth() / 2;
         GL11.glBegin(GL11.GL_QUADS);
         {
-            GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
-            GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
-            GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
-            GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
+            GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y - w);
+            GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y - w);
+            GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y + w);
+            GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y + w);
         }
         GL11.glEnd();
 
@@ -235,36 +234,36 @@ public class Main {
             case LEFT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                  {
-                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
-                    GL11.glVertex2f(CENTER_SCREENX - w * 1.5f, CENTER_SCREENY);
-                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
+                    GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y - w);
+                    GL11.glVertex2f(SCREEN_CENTER_X - w * 1.5f, SCREEN_CENTER_Y);
+                    GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y + w);
                 }
                 GL11.glEnd();
                 break;
             case RIGHT:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                  {
-                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
-                    GL11.glVertex2f(CENTER_SCREENX + w * 1.5f, CENTER_SCREENY);
-                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
+                    GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y - w);
+                    GL11.glVertex2f(SCREEN_CENTER_X + w * 1.5f, SCREEN_CENTER_Y);
+                    GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y + w);
                 }
                 GL11.glEnd();
                 break;
             case DOWN:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                  {
-                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY + w);
-                    GL11.glVertex2f(CENTER_SCREENX, CENTER_SCREENY + w * 1.5f);
-                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY + w);
+                    GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y + w);
+                    GL11.glVertex2f(SCREEN_CENTER_X, SCREEN_CENTER_Y + w * 1.5f);
+                    GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y + w);
                 }
                 GL11.glEnd();
                 break;
             case UP:
                 GL11.glBegin(GL11.GL_TRIANGLES);
                  {
-                    GL11.glVertex2f(CENTER_SCREENX + w, CENTER_SCREENY - w);
-                    GL11.glVertex2f(CENTER_SCREENX, CENTER_SCREENY - w * 1.5f);
-                    GL11.glVertex2f(CENTER_SCREENX - w, CENTER_SCREENY - w);
+                    GL11.glVertex2f(SCREEN_CENTER_X + w, SCREEN_CENTER_Y - w);
+                    GL11.glVertex2f(SCREEN_CENTER_X, SCREEN_CENTER_Y - w * 1.5f);
+                    GL11.glVertex2f(SCREEN_CENTER_X - w, SCREEN_CENTER_Y - w);
                 }
                 GL11.glEnd();
                 break;
@@ -347,7 +346,7 @@ public class Main {
 
         applyGravity();
 
-        draw(0 - (player.getX() - CENTER_SCREENX), 0 - (player.getY() - CENTER_SCREENY));
+        draw(0 - (player.getX() - SCREEN_CENTER_X), 0 - (player.getY() - SCREEN_CENTER_Y));
 
         Display.update();
         updateFPS();
