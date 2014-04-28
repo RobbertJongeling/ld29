@@ -146,26 +146,24 @@ public class Main {
 
         //lower bounds
         //startX = (startX < 0) ? 0 : startX;
-       // startY = (startY < 0) ? 0 : startY;
-
+        // startY = (startY < 0) ? 0 : startY;
         int endX = playerPoint.getX() + (int) Math.floor(widthFit / 2);
         int endY = playerPoint.getY() + (int) Math.floor(heightFit / 2);
 
         //upper bounds
         //endX = (endX >= world.getSizeX()) ? world.getSizeX() - 1 : endX;
         //endY = (endY >= world.getSizeY()) ? world.getSizeY() - 1 : endY;
-
         int w = world.getBlockWidth();
         int maxDamage = 500;
         double damageProportion = w * 0.5 / maxDamage;
-        for (int i = 0; i < cX; i++) {
-            for (int j = 0; j < cY; j++) {                
+        for (int i = 0; i < cX + 1; i++) {
+            for (int j = 0; j < cY + 1; j++) {
                 Block block = world.getBlock(i + startX, j + startY);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
-                int left = i * w;
-                int top = j * w;
+                int left = i * w - (int) (w * .5);
+                int top = j * w - (int) (w * .5);
                 int right = left + w;
                 int bottom = top + w;
                 // draw quad block thing
