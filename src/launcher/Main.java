@@ -123,8 +123,7 @@ public class Main {
         }
     }
 
-    private void initGame() {
-        world = new World();
+    private void initGame() {        
         world = Worldgenerator.generateWorld();
         player = new Player();
         player.setX(125);
@@ -263,6 +262,8 @@ public class Main {
                 GL11.glVertex2f(x, y - w *1.5f);
                 GL11.glVertex2f(x - w, y - w);
                 GL11.glEnd();
+                break;
+            default:
                 break;
         }
     }
