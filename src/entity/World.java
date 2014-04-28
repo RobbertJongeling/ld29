@@ -49,10 +49,6 @@ public class World {
         }
     }
 
-    public List<List<Block>> getBlocks() {
-        return blocks;
-    }
-
     public void addBlock(int gridX, int gridY, Block block) {
         Block b = blocks.get(gridX).get(gridY);
         if (b instanceof AirBlock) {
@@ -89,6 +85,14 @@ public class World {
         int retX = (int) Math.floor(realX / blockWidth);
         int retY = (int) Math.floor(realY / blockWidth);
         return new Point(retX, retY);
+    }
+    
+    public int getSizeX(){
+        return blocks.size();
+    }
+    
+    public int getSizeY(){
+        return blocks.get(0).size();
     }
 
 }

@@ -134,28 +134,33 @@ public class Main {
         int widthFit = (SCREEN_WIDTH / world.getBlockWidth()) + 1;
         int heightFit = (SCREEN_HEIGHT / world.getBlockWidth()) + 1;
 
-        int cX = Math.min(widthFit, world.getBlocks().size());
-        int cY = Math.min(heightFit, world.getBlocks().get(0).size());//assuming the world is not a jagged grid...
+        int cX = Math.min(widthFit, world.getSizeX());
+        int cY = Math.min(heightFit, world.getSizeY());//assuming the world is not a jagged grid...
         // Clear the screen and depth buffer
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         Point playerPoint = world.getPlayerLocationInGrid(player.getX(), player.getY());
         
         int startX = playerPoint.getX() - (int)Math.floor(widthFit/2);
-        int startY = playerPoint.getY() - (int)Math.floor(widthFit/2);
+        int startY = playerPoint.getY() - (int)Math.floor(heightFit/2);
         
+        //lower bounds
         startX = (startX <0)?0:startX;
         startY = (startY <0)?0:startY;
         
         int endX = playerPoint.getX() + (int)Math.floor(widthFit/2);
-        int endY = playerPoint.getY() + (int)Math.floor(widthFit/2);
+        int endY = playerPoint.getY() + (int)Math.floor(heightFit/2);
         
+        //upper bounds
+        endX = (endX >= world.getSizeX()) ? world.getSizeX()-1 : endX;
+        endY = (endY >= world.getSizeY()) ? world.getSizeY()-1 : endY;
+                
         int w = world.getBlockWidth();
         int maxDamage = 500;
         double damageProportion = w * 0.5 / maxDamage;
         for (int i = startX; i < endX; i++) {
             for (int j = startY; j < endY; j++) {
-                Block block = world.getBlocks().get(i).get(j);
+                Block block = world.getBlock(i, j);
                 byte[] c = block.getColor();
                 GL11.glColor3ub(c[0], c[1], c[2]);
 
@@ -177,8 +182,8 @@ public class Main {
                 if (damage < maxDamage && !(block instanceof AirBlock)) {
                     //wtf is dit?
                     int tmp = (int) Math.ceil((maxDamage / (damage + 1)) * 0.1f) + 2;
-                    int centerX = (int) (left + w * .5);
-                    int centerY = (int) (top + w * .5);
+                    int centerX = (int) (left + w * 0.5);
+                    int centerY = (int) (top + w * 0.5);
                     int visibleDamage = (int) Math.ceil(damage * damageProportion);
                     //gray
                     GL11.glColor3ub((byte) 80, (byte) 80, (byte) 80);
@@ -349,7 +354,6 @@ public class Main {
             }
             player.fall(limit);
         }
-
     }
 
     private void update() {
