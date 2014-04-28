@@ -28,7 +28,9 @@ public class Worldgenerator {
                     world.addBlock(i, k, new StoneBlock());
                 } else if(r<0.24){
                     world.addBlock(i, k, new DiamondBlock());
-                } else {
+                } else if(r<0.28){
+                    world.addBlock(i, k, new CoalBlock());
+                }else {
                     world.addBlock(i, k, new DirtBlock());
                 }
                 

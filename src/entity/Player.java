@@ -156,7 +156,9 @@ public class Player {
     public void addBlockCounter(Block block){
         if(block == null)
             return;
-        if(block instanceof DiamondBlock)
+        else if(block instanceof DiamondBlock)
             this.damage ++;
+        else if(block instanceof CoalBlock)
+            this.speed ++;
     }
 }
