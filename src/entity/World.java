@@ -66,7 +66,10 @@ public class World {
 
     public Block getBlock(int gridX, int gridY) {
         if (gridX < 0 || gridY < 0) {
-            return null;
+            return new AirBlock();
+        }
+        if (gridX >= getSizeX() || gridY >= getSizeY()){
+            return new AirBlock();
         }
         return blocks.get(gridX).get(gridY);
     }
