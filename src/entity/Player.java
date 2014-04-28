@@ -81,7 +81,7 @@ public class Player {
         return damage;
     }
     public void move(int x, int y) {
-        this.direction = getPlayerDirection(x, y);
+        //this.direction = getPlayerDirection(x, y);
 
         this.x += x * speed;
         this.y += y * speed;
@@ -89,6 +89,9 @@ public class Player {
 
     public Direction getDirection() {
         return direction;
+    }
+    public void setDirection(int x, int y){
+        this.direction = getPlayerDirection(x, y);
     }
 
     /**

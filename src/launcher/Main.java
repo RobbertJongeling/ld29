@@ -250,6 +250,7 @@ public class Main {
     }
 
     private void tryMovePlayer(int x, int y) {
+        player.setDirection(x, y);
         Point playerTargetPoint = new Point(
                 (int) Math.floor((player.getX() + (x * (player.getSpeed() + player.getWidth() * .5))) / 50),
                 (int) Math.floor((player.getY() + (y * (player.getSpeed() + player.getWidth() * .5))) / 50));
