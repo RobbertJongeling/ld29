@@ -17,3 +17,7 @@ hs_err_pid*
 #allow jar files in lib
 !/lib/*.jar
 !/lib/*/*.jar
+
+#releases
+!/rel/*.jar
+!/rel/*/*.jar
