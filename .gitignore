@@ -19,5 +19,7 @@ hs_err_pid*
 !/lib/*/*.jar
 
 #releases
-!/rel/*.jar
-!/rel/*/*.jar
+!/bin/*.jar
+!/bin/*/*.jar
+!/bin/*/*/*.jar
+!/bin/*/*/*/*.jar

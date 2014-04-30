@@ -1,0 +1,1 @@
+java -Djava.library.path=../../lib/lwjgl-2.9.1/native/windows -jar ld29.jar
